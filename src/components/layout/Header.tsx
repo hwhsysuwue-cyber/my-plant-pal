@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { Leaf, Search, Home, LogOut, Settings, User } from 'lucide-react';
+import { Leaf, Search, Home, LogOut, Settings, User, MessageSquare, Bell } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,22 +47,54 @@ export function Header() {
             Search Plants
           </Link>
           {user && !isAdmin && (
-            <Link
-              to="/my-garden"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Leaf className="h-4 w-4" />
-              My Garden
-            </Link>
+            <>
+              <Link
+                to="/my-garden"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Leaf className="h-4 w-4" />
+                My Garden
+              </Link>
+              <Link
+                to="/reminders"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Bell className="h-4 w-4" />
+                Reminders
+              </Link>
+              <Link
+                to="/feedback"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Feedback
+              </Link>
+            </>
           )}
           {isAdmin && (
-            <Link
-              to="/admin"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Settings className="h-4 w-4" />
-              Admin Dashboard
-            </Link>
+            <>
+              <Link
+                to="/admin"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Settings className="h-4 w-4" />
+                Plants
+              </Link>
+              <Link
+                to="/admin/reminders"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Bell className="h-4 w-4" />
+                Reminders
+              </Link>
+              <Link
+                to="/admin/feedback"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Feedback
+              </Link>
+            </>
           )}
         </nav>
 
@@ -83,16 +115,36 @@ export function Header() {
                 </div>
                 <DropdownMenuSeparator />
                 {!isAdmin && (
-                  <DropdownMenuItem onClick={() => navigate('/my-garden')}>
-                    <Leaf className="mr-2 h-4 w-4" />
-                    My Garden
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem onClick={() => navigate('/my-garden')}>
+                      <Leaf className="mr-2 h-4 w-4" />
+                      My Garden
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/reminders')}>
+                      <Bell className="mr-2 h-4 w-4" />
+                      Reminders
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/feedback')}>
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      Feedback
+                    </DropdownMenuItem>
+                  </>
                 )}
                 {isAdmin && (
-                  <DropdownMenuItem onClick={() => navigate('/admin')}>
-                    <Settings className="mr-2 h-4 w-4" />
-                    Admin Dashboard
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem onClick={() => navigate('/admin')}>
+                      <Settings className="mr-2 h-4 w-4" />
+                      Manage Plants
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/admin/reminders')}>
+                      <Bell className="mr-2 h-4 w-4" />
+                      Manage Reminders
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/admin/feedback')}>
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      Manage Feedback
+                    </DropdownMenuItem>
+                  </>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>
