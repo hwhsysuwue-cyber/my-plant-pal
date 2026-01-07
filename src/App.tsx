@@ -12,6 +12,7 @@ import MyGarden from "./pages/MyGarden";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminFeedback from "./pages/AdminFeedback";
 import AdminReminders from "./pages/AdminReminders";
+import AdminUsers from "./pages/AdminUsers";
 import Feedback from "./pages/Feedback";
 import Reminders from "./pages/Reminders";
 import PlantDetails from "./pages/PlantDetails";
@@ -76,6 +77,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireAdmin>
                   <AdminReminders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute requireAdmin>
+                  <AdminUsers />
                 </ProtectedRoute>
               }
             />

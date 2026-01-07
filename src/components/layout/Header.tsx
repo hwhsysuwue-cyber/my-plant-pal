@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { Leaf, Search, Home, LogOut, Settings, User, MessageSquare, Bell } from 'lucide-react';
+import { Leaf, Search, Home, LogOut, Settings, User, MessageSquare, Bell, Users } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,6 +81,13 @@ export function Header() {
                 Plants
               </Link>
               <Link
+                to="/admin/users"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Users className="h-4 w-4" />
+                Users
+              </Link>
+              <Link
                 to="/admin/reminders"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
@@ -135,6 +142,10 @@ export function Header() {
                     <DropdownMenuItem onClick={() => navigate('/admin')}>
                       <Settings className="mr-2 h-4 w-4" />
                       Manage Plants
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/admin/users')}>
+                      <Users className="mr-2 h-4 w-4" />
+                      Manage Users
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate('/admin/reminders')}>
                       <Bell className="mr-2 h-4 w-4" />
