@@ -36,9 +36,8 @@ type SignInValues = z.infer<typeof signInSchema>;
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export default function Auth() {
-  const [searchParams] = useSearchParams();
-  const initialMode = searchParams.get('mode') === 'signup' ? 'signup' : 'signin';
-  const [mode, setMode] = useState<'signin' | 'signup'>(initialMode);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mode = searchParams.get('mode') === 'signup' ? 'signup' : 'signin';
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, user, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -58,6 +57,10 @@ export default function Auth() {
     resolver: zodResolver(signUpSchema),
     defaultValues: { email: '', password: '', confirmPassword: '', fullName: '' },
   });
+
+  const setMode = (newMode: 'signin' | 'signup') => {
+    setSearchParams(newMode === 'signup' ? { mode: 'signup' } : {});
+  };
 
   const handleSignIn = async (values: SignInValues) => {
     setIsLoading(true);
