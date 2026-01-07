@@ -37,16 +37,18 @@ type SignUpValues = z.infer<typeof signUpSchema>;
 
 export default function Auth() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const mode = searchParams.get('mode') === 'signup' ? 'signup' : 'signin';
+  const modeParam = searchParams.get('mode');
+  const [mode, setModeState] = useState<'signin' | 'signup'>(modeParam === 'signup' ? 'signup' : 'signin');
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, user, isAdmin } = useAuth();
+  const { signIn, signUp, user, isAdmin, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
 
+  // Only redirect after auth is fully loaded
   useEffect(() => {
-    if (user) {
+    if (!authLoading && user) {
       navigate(isAdmin ? '/admin' : '/');
     }
-  }, [user, isAdmin, navigate]);
+  }, [user, isAdmin, authLoading, navigate]);
 
   const signInForm = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
@@ -59,7 +61,8 @@ export default function Auth() {
   });
 
   const setMode = (newMode: 'signin' | 'signup') => {
-    setSearchParams(newMode === 'signup' ? { mode: 'signup' } : {});
+    setModeState(newMode);
+    setSearchParams(newMode === 'signup' ? { mode: 'signup' } : {}, { replace: true });
   };
 
   const handleSignIn = async (values: SignInValues) => {
