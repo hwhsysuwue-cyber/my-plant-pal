@@ -223,6 +223,13 @@ export type Database = {
             referencedRelation: "reminder_templates"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "user_reminders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       user_roles: {
