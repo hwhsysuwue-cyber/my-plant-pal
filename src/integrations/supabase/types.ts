@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      feedback: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          status: Database["public"]["Enums"]["feedback_status"]
+          type: Database["public"]["Enums"]["feedback_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          status?: Database["public"]["Enums"]["feedback_status"]
+          type?: Database["public"]["Enums"]["feedback_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          status?: Database["public"]["Enums"]["feedback_status"]
+          type?: Database["public"]["Enums"]["feedback_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       plants: {
         Row: {
           category: string
@@ -80,6 +110,47 @@ export type Database = {
         }
         Relationships: []
       }
+      reminder_templates: {
+        Row: {
+          created_at: string
+          description: string | null
+          frequency_days: number
+          id: string
+          name: string
+          plant_id: string | null
+          reminder_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          frequency_days?: number
+          id?: string
+          name: string
+          plant_id?: string | null
+          reminder_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          frequency_days?: number
+          id?: string
+          name?: string
+          plant_id?: string | null
+          reminder_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminder_templates_plant_id_fkey"
+            columns: ["plant_id"]
+            isOneToOne: false
+            referencedRelation: "plants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_gardens: {
         Row: {
           added_at: string | null
@@ -105,6 +176,51 @@ export type Database = {
             columns: ["plant_id"]
             isOneToOne: false
             referencedRelation: "plants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_reminders: {
+        Row: {
+          created_at: string
+          id: string
+          is_completed: boolean
+          next_reminder_date: string
+          plant_id: string
+          reminder_template_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_completed?: boolean
+          next_reminder_date: string
+          plant_id: string
+          reminder_template_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_completed?: boolean
+          next_reminder_date?: string
+          plant_id?: string
+          reminder_template_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_reminders_plant_id_fkey"
+            columns: ["plant_id"]
+            isOneToOne: false
+            referencedRelation: "plants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_reminders_reminder_template_id_fkey"
+            columns: ["reminder_template_id"]
+            isOneToOne: false
+            referencedRelation: "reminder_templates"
             referencedColumns: ["id"]
           },
         ]
@@ -142,6 +258,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      feedback_status: "new" | "reviewed" | "resolved"
+      feedback_type: "feedback" | "suggestion" | "issue"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -270,6 +388,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      feedback_status: ["new", "reviewed", "resolved"],
+      feedback_type: ["feedback", "suggestion", "issue"],
     },
   },
 } as const
