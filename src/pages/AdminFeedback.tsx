@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, MessageSquare, Trash2 } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, MessageSquare, Trash2, Reply, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import {
@@ -26,6 +27,8 @@ export default function AdminFeedback() {
   const queryClient = useQueryClient();
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [replyingId, setReplyingId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState('');
 
   const { data: feedback, isLoading } = useQuery({
     queryKey: ['admin-feedback'],
@@ -53,6 +56,29 @@ export default function AdminFeedback() {
     },
     onError: (error) => {
       toast.error('Failed to update status: ' + error.message);
+    },
+  });
+
+  const replyMutation = useMutation({
+    mutationFn: async ({ id, reply }: { id: string; reply: string }) => {
+      const { error } = await supabase
+        .from('feedback')
+        .update({ 
+          admin_reply: reply.trim(),
+          replied_at: new Date().toISOString(),
+          status: 'reviewed' as FeedbackStatus
+        })
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success('Reply sent successfully');
+      setReplyingId(null);
+      setReplyText('');
+      queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+    },
+    onError: (error) => {
+      toast.error('Failed to send reply: ' + error.message);
     },
   });
 
@@ -93,6 +119,11 @@ export default function AdminFeedback() {
     }
   };
 
+  const handleStartReply = (id: string, existingReply?: string | null) => {
+    setReplyingId(id);
+    setReplyText(existingReply || '');
+  };
+
   return (
     <Layout>
       <div className="container py-8">
@@ -103,7 +134,7 @@ export default function AdminFeedback() {
             </div>
             <div>
               <h1 className="font-display text-3xl font-semibold">Feedback Management</h1>
-              <p className="text-muted-foreground">Review and manage user feedback</p>
+              <p className="text-muted-foreground">Review and respond to user feedback</p>
             </div>
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -139,47 +170,115 @@ export default function AdminFeedback() {
             {filteredFeedback.map((item) => (
               <Card key={item.id}>
                 <CardContent className="pt-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge className={getTypeColor(item.type)} variant="secondary">
-                          {item.type}
-                        </Badge>
-                        <Badge className={getStatusColor(item.status)} variant="secondary">
-                          {item.status}
-                        </Badge>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge className={getTypeColor(item.type)} variant="secondary">
+                            {item.type}
+                          </Badge>
+                          <Badge className={getStatusColor(item.status)} variant="secondary">
+                            {item.status}
+                          </Badge>
+                          {item.admin_reply && (
+                            <Badge variant="outline" className="text-primary border-primary">
+                              <Check className="h-3 w-3 mr-1" />
+                              Replied
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm mb-2">{item.message}</p>
+                        <p className="text-xs text-muted-foreground">
+                          From: {(item.profiles as any)?.full_name || (item.profiles as any)?.email || 'Unknown'} •{' '}
+                          {format(new Date(item.created_at), 'PPp')}
+                        </p>
                       </div>
-                      <p className="text-sm mb-2">{item.message}</p>
-                      <p className="text-xs text-muted-foreground">
-                        From: {(item.profiles as any)?.full_name || (item.profiles as any)?.email || 'Unknown'} •{' '}
-                        {format(new Date(item.created_at), 'PPp')}
-                      </p>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {replyingId !== item.id && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStartReply(item.id, item.admin_reply)}
+                          >
+                            <Reply className="h-4 w-4 mr-1" />
+                            {item.admin_reply ? 'Edit Reply' : 'Reply'}
+                          </Button>
+                        )}
+                        <Select
+                          value={item.status}
+                          onValueChange={(v) =>
+                            updateStatusMutation.mutate({ id: item.id, status: v as FeedbackStatus })
+                          }
+                        >
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="new">New</SelectItem>
+                            <SelectItem value="reviewed">Reviewed</SelectItem>
+                            <SelectItem value="resolved">Resolved</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setDeletingId(item.id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Select
-                        value={item.status}
-                        onValueChange={(v) =>
-                          updateStatusMutation.mutate({ id: item.id, status: v as FeedbackStatus })
-                        }
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="new">New</SelectItem>
-                          <SelectItem value="reviewed">Reviewed</SelectItem>
-                          <SelectItem value="resolved">Resolved</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setDeletingId(item.id)}
-                        className="text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+
+                    {/* Show existing reply */}
+                    {item.admin_reply && replyingId !== item.id && (
+                      <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                        <p className="text-xs font-medium text-primary mb-1">Your Reply:</p>
+                        <p className="text-sm">{item.admin_reply}</p>
+                        {item.replied_at && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Replied {format(new Date(item.replied_at), 'PPp')}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Reply form */}
+                    {replyingId === item.id && (
+                      <div className="space-y-2">
+                        <Textarea
+                          placeholder="Type your reply..."
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          rows={3}
+                          maxLength={1000}
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => replyMutation.mutate({ id: item.id, reply: replyText })}
+                            disabled={!replyText.trim() || replyMutation.isPending}
+                          >
+                            {replyMutation.isPending ? (
+                              <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                            ) : (
+                              <Reply className="h-4 w-4 mr-1" />
+                            )}
+                            Send Reply
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setReplyingId(null);
+                              setReplyText('');
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

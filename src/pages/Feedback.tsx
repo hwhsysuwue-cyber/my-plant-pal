@@ -160,11 +160,29 @@ export default function Feedback() {
                           <Badge className={getStatusColor(item.status)} variant="secondary">
                             {item.status}
                           </Badge>
+                          {item.admin_reply && (
+                            <Badge variant="outline" className="text-primary border-primary">
+                              Replied
+                            </Badge>
+                          )}
                         </div>
                         <p className="text-sm">{item.message}</p>
                         <p className="text-xs text-muted-foreground mt-2">
                           Submitted {format(new Date(item.created_at), 'PPp')}
                         </p>
+
+                        {/* Show admin reply */}
+                        {item.admin_reply && (
+                          <div className="mt-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                            <p className="text-xs font-medium text-primary mb-1">Admin Response:</p>
+                            <p className="text-sm">{item.admin_reply}</p>
+                            {item.replied_at && (
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {format(new Date(item.replied_at), 'PPp')}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </CardContent>
