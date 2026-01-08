@@ -16,27 +16,33 @@ export type Database = {
     Tables: {
       feedback: {
         Row: {
+          admin_reply: string | null
           created_at: string
           id: string
           message: string
+          replied_at: string | null
           status: Database["public"]["Enums"]["feedback_status"]
           type: Database["public"]["Enums"]["feedback_type"]
           updated_at: string
           user_id: string
         }
         Insert: {
+          admin_reply?: string | null
           created_at?: string
           id?: string
           message: string
+          replied_at?: string | null
           status?: Database["public"]["Enums"]["feedback_status"]
           type?: Database["public"]["Enums"]["feedback_type"]
           updated_at?: string
           user_id: string
         }
         Update: {
+          admin_reply?: string | null
           created_at?: string
           id?: string
           message?: string
+          replied_at?: string | null
           status?: Database["public"]["Enums"]["feedback_status"]
           type?: Database["public"]["Enums"]["feedback_type"]
           updated_at?: string
