@@ -100,9 +100,9 @@ export default function Feedback() {
             <CardDescription>We value your input and will review it promptly</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Select value={type} onValueChange={(v) => setType(v as FeedbackType)}>
-                <SelectTrigger className="w-40">
+                <SelectTrigger className="w-full sm:w-40">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -119,9 +119,10 @@ export default function Feedback() {
               rows={4}
               maxLength={1000}
             />
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <span className="text-sm text-muted-foreground">{message.length}/1000</span>
               <Button
+                className="w-full sm:w-auto"
                 onClick={() => submitMutation.mutate()}
                 disabled={!message.trim() || submitMutation.isPending}
               >
@@ -151,39 +152,39 @@ export default function Feedback() {
               {myFeedback.map((item) => (
                 <Card key={item.id}>
                   <CardContent className="pt-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className={getTypeColor(item.type)} variant="secondary">
-                            {item.type}
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge className={getTypeColor(item.type)} variant="secondary">
+                          {item.type}
+                        </Badge>
+                        <Badge className={getStatusColor(item.status)} variant="secondary">
+                          {item.status}
+                        </Badge>
+                        {item.admin_reply && (
+                          <Badge variant="outline" className="text-primary border-primary">
+                            Replied
                           </Badge>
-                          <Badge className={getStatusColor(item.status)} variant="secondary">
-                            {item.status}
-                          </Badge>
-                          {item.admin_reply && (
-                            <Badge variant="outline" className="text-primary border-primary">
-                              Replied
-                            </Badge>
-                          )}
-                        </div>
+                        )}
+                      </div>
+                      <div>
                         <p className="text-sm">{item.message}</p>
                         <p className="text-xs text-muted-foreground mt-2">
                           Submitted {format(new Date(item.created_at), 'PPp')}
                         </p>
-
-                        {/* Show admin reply */}
-                        {item.admin_reply && (
-                          <div className="mt-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
-                            <p className="text-xs font-medium text-primary mb-1">Admin Response:</p>
-                            <p className="text-sm">{item.admin_reply}</p>
-                            {item.replied_at && (
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {format(new Date(item.replied_at), 'PPp')}
-                              </p>
-                            )}
-                          </div>
-                        )}
                       </div>
+
+                      {/* Show admin reply */}
+                      {item.admin_reply && (
+                        <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                          <p className="text-xs font-medium text-primary mb-1">Admin Response:</p>
+                          <p className="text-sm">{item.admin_reply}</p>
+                          {item.replied_at && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {format(new Date(item.replied_at), 'PPp')}
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
