@@ -171,63 +171,67 @@ export default function AdminFeedback() {
               <Card key={item.id}>
                 <CardContent className="pt-4">
                   <div className="flex flex-col gap-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className={getTypeColor(item.type)} variant="secondary">
-                            {item.type}
-                          </Badge>
-                          <Badge className={getStatusColor(item.status)} variant="secondary">
-                            {item.status}
-                          </Badge>
-                          {item.admin_reply && (
-                            <Badge variant="outline" className="text-primary border-primary">
-                              <Check className="h-3 w-3 mr-1" />
-                              Replied
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-sm mb-2">{item.message}</p>
-                        <p className="text-xs text-muted-foreground">
-                          From: {(item.profiles as any)?.full_name || (item.profiles as any)?.email || 'Unknown'} •{' '}
-                          {format(new Date(item.created_at), 'PPp')}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        {replyingId !== item.id && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleStartReply(item.id, item.admin_reply)}
-                          >
-                            <Reply className="h-4 w-4 mr-1" />
-                            {item.admin_reply ? 'Edit Reply' : 'Reply'}
-                          </Button>
-                        )}
-                        <Select
-                          value={item.status}
-                          onValueChange={(v) =>
-                            updateStatusMutation.mutate({ id: item.id, status: v as FeedbackStatus })
-                          }
-                        >
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="new">New</SelectItem>
-                            <SelectItem value="reviewed">Reviewed</SelectItem>
-                            <SelectItem value="resolved">Resolved</SelectItem>
-                          </SelectContent>
-                        </Select>
+                    {/* Header with badges */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className={getTypeColor(item.type)} variant="secondary">
+                        {item.type}
+                      </Badge>
+                      <Badge className={getStatusColor(item.status)} variant="secondary">
+                        {item.status}
+                      </Badge>
+                      {item.admin_reply && (
+                        <Badge variant="outline" className="text-primary border-primary">
+                          <Check className="h-3 w-3 mr-1" />
+                          Replied
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Message content */}
+                    <div>
+                      <p className="text-sm mb-2">{item.message}</p>
+                      <p className="text-xs text-muted-foreground">
+                        From: {(item.profiles as any)?.full_name || (item.profiles as any)?.email || 'Unknown'} •{' '}
+                        {format(new Date(item.created_at), 'PPp')}
+                      </p>
+                    </div>
+
+                    {/* Actions - responsive layout */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      {replyingId !== item.id && (
                         <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setDeletingId(item.id)}
-                          className="text-destructive hover:text-destructive"
+                          variant="outline"
+                          size="sm"
+                          className="w-full sm:w-auto"
+                          onClick={() => handleStartReply(item.id, item.admin_reply)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Reply className="h-4 w-4 mr-1" />
+                          {item.admin_reply ? 'Edit Reply' : 'Reply'}
                         </Button>
-                      </div>
+                      )}
+                      <Select
+                        value={item.status}
+                        onValueChange={(v) =>
+                          updateStatusMutation.mutate({ id: item.id, status: v as FeedbackStatus })
+                        }
+                      >
+                        <SelectTrigger className="w-full sm:w-32">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="new">New</SelectItem>
+                          <SelectItem value="reviewed">Reviewed</SelectItem>
+                          <SelectItem value="resolved">Resolved</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setDeletingId(item.id)}
+                        className="text-destructive hover:text-destructive self-end sm:self-auto"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
 
                     {/* Show existing reply */}

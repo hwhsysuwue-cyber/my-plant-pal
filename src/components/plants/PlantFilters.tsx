@@ -46,9 +46,9 @@ export function PlantFilters({
         />
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
         <Select value={selectedCategory} onValueChange={onCategoryChange}>
-          <SelectTrigger className="w-[180px] bg-card border-border/50">
+          <SelectTrigger className="w-full sm:w-[180px] bg-card border-border/50">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -62,7 +62,7 @@ export function PlantFilters({
         </Select>
 
         <Select value={selectedType} onValueChange={onTypeChange}>
-          <SelectTrigger className="w-[180px] bg-card border-border/50">
+          <SelectTrigger className="w-full sm:w-[180px] bg-card border-border/50">
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
@@ -76,7 +76,7 @@ export function PlantFilters({
         </Select>
 
         {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={onClear} className="h-10">
+          <Button variant="ghost" size="sm" onClick={onClear} className="h-10 w-full sm:w-auto">
             <X className="mr-2 h-4 w-4" />
             Clear Filters
           </Button>

@@ -12,7 +12,7 @@ export default function Index() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/50 via-background to-leaf-light/30" />
-        <div className="container relative py-24 lg:py-32">
+        <div className="container relative py-12 sm:py-24 lg:py-32 px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
               <Leaf className="h-4 w-4" />
@@ -70,9 +70,9 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-10 h-32 w-32 rounded-full bg-leaf/10 blur-3xl" />
-        <div className="absolute bottom-20 right-10 h-40 w-40 rounded-full bg-terracotta/10 blur-3xl" />
+        {/* Decorative elements - hidden on mobile for performance */}
+        <div className="hidden sm:block absolute top-20 left-10 h-32 w-32 rounded-full bg-leaf/10 blur-3xl" />
+        <div className="hidden sm:block absolute bottom-20 right-10 h-40 w-40 rounded-full bg-terracotta/10 blur-3xl" />
       </section>
 
       {/* Features Section */}
@@ -125,7 +125,7 @@ export default function Index() {
       {!user && (
         <section className="py-20">
           <div className="container">
-            <div className="relative overflow-hidden rounded-3xl gradient-forest p-12 text-center">
+            <div className="relative overflow-hidden rounded-3xl gradient-forest p-6 sm:p-12 text-center">
               <div className="relative z-10">
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
                   Start Your Plant Journey Today

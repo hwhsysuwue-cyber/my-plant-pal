@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { Leaf, Search, Home, LogOut, Settings, User, MessageSquare, Bell, Users } from 'lucide-react';
+import { Leaf, Search, Home, LogOut, Settings, User, MessageSquare, Bell, Users, Menu, X } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,14 +10,119 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 export function Header() {
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
+    setMobileMenuOpen(false);
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setMobileMenuOpen(false);
+  };
+
+  const NavLinks = ({ mobile = false }: { mobile?: boolean }) => {
+    const linkClass = mobile
+      ? "flex items-center gap-3 px-4 py-3 text-foreground hover:bg-accent rounded-lg transition-colors"
+      : "flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors";
+
+    return (
+      <>
+        <Link
+          to="/"
+          className={linkClass}
+          onClick={() => mobile && setMobileMenuOpen(false)}
+        >
+          <Home className="h-4 w-4" />
+          Home
+        </Link>
+        <Link
+          to="/search"
+          className={linkClass}
+          onClick={() => mobile && setMobileMenuOpen(false)}
+        >
+          <Search className="h-4 w-4" />
+          Search Plants
+        </Link>
+        {user && !isAdmin && (
+          <>
+            <Link
+              to="/my-garden"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <Leaf className="h-4 w-4" />
+              My Garden
+            </Link>
+            <Link
+              to="/reminders"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <Bell className="h-4 w-4" />
+              Reminders
+            </Link>
+            <Link
+              to="/feedback"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <MessageSquare className="h-4 w-4" />
+              Feedback
+            </Link>
+          </>
+        )}
+        {isAdmin && (
+          <>
+            <Link
+              to="/admin"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <Settings className="h-4 w-4" />
+              Plants
+            </Link>
+            <Link
+              to="/admin/users"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <Users className="h-4 w-4" />
+              Users
+            </Link>
+            <Link
+              to="/admin/reminders"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <Bell className="h-4 w-4" />
+              Reminders
+            </Link>
+            <Link
+              to="/admin/feedback"
+              className={linkClass}
+              onClick={() => mobile && setMobileMenuOpen(false)}
+            >
+              <MessageSquare className="h-4 w-4" />
+              Feedback
+            </Link>
+          </>
+        )}
+      </>
+    );
   };
 
   return (
@@ -31,148 +137,144 @@ export function Header() {
           </span>
         </Link>
 
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Home className="h-4 w-4" />
-            Home
-          </Link>
-          <Link
-            to="/search"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Search className="h-4 w-4" />
-            Search Plants
-          </Link>
-          {user && !isAdmin && (
-            <>
-              <Link
-                to="/my-garden"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Leaf className="h-4 w-4" />
-                My Garden
-              </Link>
-              <Link
-                to="/reminders"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Bell className="h-4 w-4" />
-                Reminders
-              </Link>
-              <Link
-                to="/feedback"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <MessageSquare className="h-4 w-4" />
-                Feedback
-              </Link>
-            </>
-          )}
-          {isAdmin && (
-            <>
-              <Link
-                to="/admin"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Settings className="h-4 w-4" />
-                Plants
-              </Link>
-              <Link
-                to="/admin/users"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Users className="h-4 w-4" />
-                Users
-              </Link>
-              <Link
-                to="/admin/reminders"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Bell className="h-4 w-4" />
-                Reminders
-              </Link>
-              <Link
-                to="/admin/feedback"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <MessageSquare className="h-4 w-4" />
-                Feedback
-              </Link>
-            </>
-          )}
+          <NavLinks />
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <User className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <div className="px-2 py-1.5 text-sm font-medium">
-                  {user.email}
-                </div>
-                <div className="px-2 pb-1.5 text-xs text-muted-foreground capitalize">
-                  {isAdmin ? 'Administrator' : 'User'}
-                </div>
-                <DropdownMenuSeparator />
-                {!isAdmin && (
-                  <>
-                    <DropdownMenuItem onClick={() => navigate('/my-garden')}>
-                      <Leaf className="mr-2 h-4 w-4" />
-                      My Garden
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/reminders')}>
-                      <Bell className="mr-2 h-4 w-4" />
-                      Reminders
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/feedback')}>
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Feedback
-                    </DropdownMenuItem>
-                  </>
-                )}
-                {isAdmin && (
-                  <>
-                    <DropdownMenuItem onClick={() => navigate('/admin')}>
-                      <Settings className="mr-2 h-4 w-4" />
-                      Manage Plants
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/admin/users')}>
-                      <Users className="mr-2 h-4 w-4" />
-                      Manage Users
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/admin/reminders')}>
-                      <Bell className="mr-2 h-4 w-4" />
-                      Manage Reminders
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/admin/feedback')}>
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Manage Feedback
-                    </DropdownMenuItem>
-                  </>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <>
+              {/* User Dropdown - visible on all screen sizes */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" className="rounded-full">
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <div className="px-2 py-1.5 text-sm font-medium truncate">
+                    {user.email}
+                  </div>
+                  <div className="px-2 pb-1.5 text-xs text-muted-foreground capitalize">
+                    {isAdmin ? 'Administrator' : 'User'}
+                  </div>
+                  <DropdownMenuSeparator />
+                  {!isAdmin && (
+                    <>
+                      <DropdownMenuItem onClick={() => navigate('/my-garden')}>
+                        <Leaf className="mr-2 h-4 w-4" />
+                        My Garden
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/reminders')}>
+                        <Bell className="mr-2 h-4 w-4" />
+                        Reminders
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/feedback')}>
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        Feedback
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuItem onClick={() => navigate('/admin')}>
+                        <Settings className="mr-2 h-4 w-4" />
+                        Manage Plants
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/admin/users')}>
+                        <Users className="mr-2 h-4 w-4" />
+                        Manage Users
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/admin/reminders')}>
+                        <Bell className="mr-2 h-4 w-4" />
+                        Manage Reminders
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/admin/feedback')}>
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        Manage Feedback
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Mobile Menu Button */}
+              <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                <SheetTrigger asChild className="md:hidden">
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-72">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <Leaf className="h-5 w-5 text-primary" />
+                      Navigation
+                    </SheetTitle>
+                  </SheetHeader>
+                  <nav className="flex flex-col gap-1 mt-6">
+                    <NavLinks mobile />
+                  </nav>
+                </SheetContent>
+              </Sheet>
+            </>
           ) : (
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" onClick={() => navigate('/auth')}>
-                Sign In
-              </Button>
-              <Button onClick={() => navigate('/auth?mode=signup')}>
-                Get Started
-              </Button>
-            </div>
+            <>
+              {/* Auth buttons - responsive */}
+              <div className="hidden sm:flex items-center gap-2">
+                <Button variant="ghost" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
+                <Button onClick={() => navigate('/auth?mode=signup')}>
+                  Get Started
+                </Button>
+              </div>
+
+              {/* Mobile: Compact auth + menu */}
+              <div className="flex sm:hidden items-center gap-2">
+                <Button size="sm" onClick={() => navigate('/auth?mode=signup')}>
+                  Sign Up
+                </Button>
+                <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="right" className="w-72">
+                    <SheetHeader>
+                      <SheetTitle className="flex items-center gap-2">
+                        <Leaf className="h-5 w-5 text-primary" />
+                        Navigation
+                      </SheetTitle>
+                    </SheetHeader>
+                    <nav className="flex flex-col gap-1 mt-6">
+                      <NavLinks mobile />
+                      <div className="border-t border-border my-4" />
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start"
+                        onClick={() => handleNavigation('/auth')}
+                      >
+                        Sign In
+                      </Button>
+                      <Button
+                        className="w-full justify-start"
+                        onClick={() => handleNavigation('/auth?mode=signup')}
+                      >
+                        Get Started
+                      </Button>
+                    </nav>
+                  </SheetContent>
+                </Sheet>
+              </div>
+            </>
           )}
         </div>
       </div>
