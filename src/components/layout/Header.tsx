@@ -236,43 +236,14 @@ export function Header() {
                 </Button>
               </div>
 
-              {/* Mobile: Compact auth + menu */}
+              {/* Mobile: Compact auth buttons only (no hamburger menu) */}
               <div className="flex sm:hidden items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
                 <Button size="sm" onClick={() => navigate('/auth?mode=signup')}>
                   Sign Up
                 </Button>
-                <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Menu className="h-5 w-5" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="right" className="w-72">
-                    <SheetHeader>
-                      <SheetTitle className="flex items-center gap-2">
-                        <Leaf className="h-5 w-5 text-primary" />
-                        Navigation
-                      </SheetTitle>
-                    </SheetHeader>
-                    <nav className="flex flex-col gap-1 mt-6">
-                      <NavLinks mobile />
-                      <div className="border-t border-border my-4" />
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start"
-                        onClick={() => handleNavigation('/auth')}
-                      >
-                        Sign In
-                      </Button>
-                      <Button
-                        className="w-full justify-start"
-                        onClick={() => handleNavigation('/auth?mode=signup')}
-                      >
-                        Get Started
-                      </Button>
-                    </nav>
-                  </SheetContent>
-                </Sheet>
               </div>
             </>
           )}
