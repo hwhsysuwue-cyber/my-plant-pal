@@ -18,13 +18,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { CreatableCombobox } from './CreatableCombobox';
+import { ImageUpload } from './ImageUpload';
+import { usePlantOptions, PlantFieldName } from '@/hooks/usePlantOptions';
+import { toast } from 'sonner';
 
 const plantSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -47,10 +44,57 @@ interface PlantFormDialogProps {
   isLoading?: boolean;
 }
 
-const categories = ['Indoor', 'Outdoor', 'Tropical', 'Succulent', 'Flowering', 'Herb', 'Vegetable'];
-const wateringSchedules = ['Daily', 'Every 2-3 days', 'Weekly', 'Every 2 weeks', 'Monthly'];
-const sunlightOptions = ['Full Sun', 'Partial Sun', 'Partial Shade', 'Full Shade', 'Indirect Light'];
-const soilTypes = ['Well-draining', 'Sandy', 'Loamy', 'Clay', 'Peat-based', 'Cactus mix'];
+interface FieldConfig {
+  name: PlantFieldName;
+  label: string;
+}
+
+const DROPDOWN_FIELDS: FieldConfig[] = [
+  { name: 'category', label: 'Category' },
+  { name: 'type', label: 'Type' },
+  { name: 'watering_schedule', label: 'Watering Schedule' },
+  { name: 'sunlight_requirement', label: 'Sunlight Requirement' },
+  { name: 'soil_type', label: 'Soil Type' },
+];
+
+function PlantOptionField({
+  fieldName,
+  label,
+  value,
+  onChange,
+  disabled,
+}: {
+  fieldName: PlantFieldName;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+}) {
+  const { options, isLoading, createOption } = usePlantOptions(fieldName);
+
+  const handleCreate = async (newValue: string) => {
+    try {
+      await createOption.mutateAsync(newValue);
+    } catch (error) {
+      toast.error(`Failed to add ${label.toLowerCase()}: ${(error as Error).message}`);
+      throw error;
+    }
+  };
+
+  return (
+    <CreatableCombobox
+      options={options}
+      value={value}
+      onChange={onChange}
+      onCreateOption={handleCreate}
+      placeholder={`Select or type to add new`}
+      isLoading={isLoading}
+      isCreating={createOption.isPending}
+      disabled={disabled}
+      canCreate={true}
+    />
+  );
+}
 
 export function PlantFormDialog({
   open,
@@ -104,121 +148,74 @@ export function PlantFormDialog({
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>
-                            {cat}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Image Upload */}
+            <FormField
+              control={form.control}
+              name="image_url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Plant Image</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Aroid" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Dropdown Fields Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {DROPDOWN_FIELDS.slice(0, 2).map((config) => (
+                <FormField
+                  key={config.name}
+                  control={form.control}
+                  name={config.name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{config.label}</FormLabel>
+                      <FormControl>
+                        <PlantOptionField
+                          fieldName={config.name}
+                          label={config.label}
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
             </div>
 
-            <FormField
-              control={form.control}
-              name="watering_schedule"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Watering Schedule</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+            {/* Remaining Dropdown Fields */}
+            {DROPDOWN_FIELDS.slice(2).map((config) => (
+              <FormField
+                key={config.name}
+                control={form.control}
+                name={config.name}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{config.label}</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select schedule" />
-                      </SelectTrigger>
+                      <PlantOptionField
+                        fieldName={config.name}
+                        label={config.label}
+                        value={field.value}
+                        onChange={field.onChange}
+                        disabled={isLoading}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {wateringSchedules.map((schedule) => (
-                        <SelectItem key={schedule} value={schedule}>
-                          {schedule}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="sunlight_requirement"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Sunlight Requirement</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select sunlight" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {sunlightOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="soil_type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Soil Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select soil" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {soilTypes.map((soil) => (
-                        <SelectItem key={soil} value={soil}>
-                          {soil}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
 
             <FormField
               control={form.control}
@@ -238,21 +235,7 @@ export function PlantFormDialog({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="image_url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex gap-3 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button
                 type="button"
                 variant="outline"

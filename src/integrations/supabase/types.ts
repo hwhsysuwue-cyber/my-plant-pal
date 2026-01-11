@@ -58,6 +58,30 @@ export type Database = {
           },
         ]
       }
+      plant_options: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          field_name: string
+          id: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          field_name: string
+          id?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          field_name?: string
+          id?: string
+          value?: string
+        }
+        Relationships: []
+      }
       plants: {
         Row: {
           category: string
