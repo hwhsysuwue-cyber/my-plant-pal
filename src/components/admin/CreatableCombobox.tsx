@@ -1,20 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { Check, ChevronsUpDown, Plus, Loader2 } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Check, Loader2, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 
 interface CreatableComboboxProps {
@@ -34,139 +21,204 @@ export function CreatableCombobox({
   value,
   onChange,
   onCreateOption,
-  placeholder = 'Select or type to add new',
+  placeholder = 'Type or select value',
   isLoading = false,
   isCreating = false,
   disabled = false,
   canCreate = true,
 }: CreatableComboboxProps) {
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(value);
   const [recentlyCreated, setRecentlyCreated] = useState<string[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Sync input value with prop value
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   const trimmedInput = inputValue.trim();
-  const isExactMatch = options.some(
-    opt => opt.toLowerCase() === trimmedInput.toLowerCase()
-  );
+  
+  // Case-insensitive match check
+  const findExactMatch = useCallback((searchValue: string) => {
+    return options.find(opt => opt.toLowerCase() === searchValue.toLowerCase());
+  }, [options]);
+
+  const isExactMatch = findExactMatch(trimmedInput);
   const canCreateNew = canCreate && trimmedInput && !isExactMatch && !/^\d+$/.test(trimmedInput);
-
-  const handleCreate = async () => {
-    if (!onCreateOption || !canCreateNew) return;
-    
-    try {
-      await onCreateOption(trimmedInput);
-      setRecentlyCreated(prev => [...prev, trimmedInput]);
-      onChange(trimmedInput);
-      setInputValue('');
-      setOpen(false);
-    } catch (error) {
-      console.error('Failed to create option:', error);
-    }
-  };
-
-  const handleSelect = (selectedValue: string) => {
-    onChange(selectedValue);
-    setInputValue('');
-    setOpen(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && canCreateNew && !isCreating) {
-      e.preventDefault();
-      handleCreate();
-    }
-  };
 
   const filteredOptions = options.filter(opt =>
     opt.toLowerCase().includes(trimmedInput.toLowerCase())
   );
 
+  const handleCreateOrSelect = async () => {
+    if (!trimmedInput) return;
+
+    // Check for existing match (case-insensitive)
+    const existingMatch = findExactMatch(trimmedInput);
+    
+    if (existingMatch) {
+      // Select existing option
+      onChange(existingMatch);
+      setInputValue(existingMatch);
+    } else if (canCreateNew && onCreateOption) {
+      // Create new option
+      try {
+        await onCreateOption(trimmedInput);
+        setRecentlyCreated(prev => [...prev, trimmedInput]);
+        onChange(trimmedInput);
+      } catch (error) {
+        console.error('Failed to create option:', error);
+        // Revert to previous value on error
+        setInputValue(value);
+      }
+    }
+    
+    setOpen(false);
+  };
+
+  const handleSelect = (selectedValue: string) => {
+    onChange(selectedValue);
+    setInputValue(selectedValue);
+    setOpen(false);
+    inputRef.current?.blur();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleCreateOrSelect();
+    } else if (e.key === 'Escape') {
+      setInputValue(value);
+      setOpen(false);
+      inputRef.current?.blur();
+    } else if (e.key === 'ArrowDown' && !open) {
+      setOpen(true);
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    // Check if focus is moving within the container
+    if (containerRef.current?.contains(e.relatedTarget as Node)) {
+      return;
+    }
+    
+    // Delay to allow click events on dropdown items
+    setTimeout(() => {
+      if (!containerRef.current?.contains(document.activeElement)) {
+        handleCreateOrSelect();
+      }
+    }, 150);
+  };
+
+  const handleFocus = () => {
+    setOpen(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    if (!open) setOpen(true);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between font-normal"
+    <div ref={containerRef} className="relative w-full">
+      <div className="relative">
+        <Input
+          ref={inputRef}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholder={placeholder}
           disabled={disabled || isLoading}
-        >
-          {isLoading ? (
-            <span className="text-muted-foreground">Loading...</span>
-          ) : value ? (
-            <span className="flex items-center gap-2">
-              {value}
-              {recentlyCreated.includes(value) && (
-                <Badge variant="secondary" className="text-xs py-0 px-1">
-                  New
-                </Badge>
-              )}
-            </span>
-          ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
+          className={cn(
+            "pr-8",
+            isCreating && "opacity-70"
           )}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 z-50" align="start">
-        <Command shouldFilter={false}>
-          <CommandInput
-            placeholder={placeholder}
-            value={inputValue}
-            onValueChange={setInputValue}
-            onKeyDown={handleKeyDown}
-          />
-          <CommandList>
-            {filteredOptions.length === 0 && !canCreateNew && (
-              <CommandEmpty>No options found.</CommandEmpty>
-            )}
-            
+        />
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+          {isCreating ? (
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : (
+            <ChevronDown 
+              className={cn(
+                "h-4 w-4 text-muted-foreground transition-transform cursor-pointer",
+                open && "rotate-180"
+              )}
+              onClick={() => {
+                setOpen(!open);
+                if (!open) inputRef.current?.focus();
+              }}
+            />
+          )}
+        </div>
+      </div>
+
+      {open && (filteredOptions.length > 0 || canCreateNew) && (
+        <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg">
+          <div className="max-h-60 overflow-auto p-1">
             {canCreateNew && (
-              <CommandGroup>
-                <CommandItem
-                  onSelect={handleCreate}
-                  className="text-primary cursor-pointer"
-                  disabled={isCreating}
-                >
-                  {isCreating ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <Plus className="mr-2 h-4 w-4" />
-                  )}
-                  Add "{trimmedInput}"
-                </CommandItem>
-              </CommandGroup>
+              <div
+                className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent text-primary font-medium"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleCreateOrSelect();
+                }}
+              >
+                <span>Create "{trimmedInput}"</span>
+                <Badge variant="secondary" className="text-xs py-0 px-1">
+                  Enter
+                </Badge>
+              </div>
             )}
             
-            {filteredOptions.length > 0 && (
-              <CommandGroup>
-                {filteredOptions.map((option) => (
-                  <CommandItem
-                    key={option}
-                    value={option}
-                    onSelect={() => handleSelect(option)}
-                  >
-                    <Check
-                      className={cn(
-                        'mr-2 h-4 w-4',
-                        value === option ? 'opacity-100' : 'opacity-0'
-                      )}
-                    />
-                    <span className="flex items-center gap-2">
-                      {option}
-                      {recentlyCreated.includes(option) && (
-                        <Badge variant="secondary" className="text-xs py-0 px-1">
-                          New
-                        </Badge>
-                      )}
-                    </span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+            {filteredOptions.map((option) => (
+              <div
+                key={option}
+                className={cn(
+                  "flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent",
+                  value === option && "bg-accent"
+                )}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleSelect(option);
+                }}
+              >
+                <Check
+                  className={cn(
+                    'h-4 w-4 shrink-0',
+                    value === option ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                <span className="flex items-center gap-2 flex-1">
+                  {option}
+                  {recentlyCreated.includes(option) && (
+                    <Badge variant="secondary" className="text-xs py-0 px-1">
+                      New
+                    </Badge>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
