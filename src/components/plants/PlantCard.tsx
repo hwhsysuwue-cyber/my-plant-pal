@@ -42,52 +42,64 @@ export function PlantCard({
   const defaultImage = 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=300&fit=crop';
 
   return (
-    <Card className="group overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300 border-border/50 animate-fade-in">
-      <div className="relative aspect-[4/3] overflow-hidden">
+    <Card className="group overflow-hidden border-border/50 shadow-soft hover:shadow-card transition-all duration-300 animate-fade-in">
+      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
         <img
           src={imageUrl || defaultImage}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
-        <div className="absolute bottom-3 left-3 right-3">
-          <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm text-foreground">
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute top-3 left-3">
+          <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm text-foreground font-medium text-xs">
             {category}
           </Badge>
         </div>
       </div>
-      <CardContent className="p-4">
-        <h3 className="font-display text-lg font-semibold text-foreground mb-1">{name}</h3>
-        <p className="text-sm text-muted-foreground mb-3">{type}</p>
+      
+      <CardContent className="p-5">
+        <div className="mb-3">
+          <h3 className="font-display text-lg font-semibold text-foreground mb-0.5 group-hover:text-primary transition-colors">
+            {name}
+          </h3>
+          <p className="text-sm text-muted-foreground">{type}</p>
+        </div>
         
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Droplets className="h-4 w-4 text-water" />
-            <span>{wateringSchedule}</span>
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-2.5 text-sm">
+            <div className="h-7 w-7 rounded-lg bg-water/10 flex items-center justify-center flex-shrink-0">
+              <Droplets className="h-3.5 w-3.5 text-water" />
+            </div>
+            <span className="text-muted-foreground">{wateringSchedule}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Sun className="h-4 w-4 text-sun" />
-            <span>{sunlightRequirement}</span>
+          <div className="flex items-center gap-2.5 text-sm">
+            <div className="h-7 w-7 rounded-lg bg-sun/10 flex items-center justify-center flex-shrink-0">
+              <Sun className="h-3.5 w-3.5 text-sun" />
+            </div>
+            <span className="text-muted-foreground">{sunlightRequirement}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Sprout className="h-4 w-4 text-soil" />
-            <span>{soilType}</span>
+          <div className="flex items-center gap-2.5 text-sm">
+            <div className="h-7 w-7 rounded-lg bg-soil/10 flex items-center justify-center flex-shrink-0">
+              <Sprout className="h-3.5 w-3.5 text-soil" />
+            </div>
+            <span className="text-muted-foreground">{soilType}</span>
           </div>
         </div>
 
         {description && (
-          <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
+          <p className="mt-4 text-sm text-muted-foreground line-clamp-2">
             {description}
           </p>
         )}
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex gap-2">
+      
+      <CardFooter className="px-5 pb-5 pt-0 flex gap-2">
         {isAdmin ? (
           <>
-            <Button variant="outline" size="sm" className="flex-1" onClick={onEdit}>
+            <Button variant="outline" size="sm" className="flex-1 h-9" onClick={onEdit}>
               Edit
             </Button>
-            <Button variant="destructive" size="sm" onClick={onDelete}>
+            <Button variant="outline" size="icon" className="h-9 w-9 text-destructive hover:text-destructive hover:bg-destructive/10" onClick={onDelete}>
               <Trash2 className="h-4 w-4" />
             </Button>
           </>
@@ -96,7 +108,7 @@ export function PlantCard({
             <Button
               variant="secondary"
               size="sm"
-              className="w-full"
+              className="w-full h-9"
               onClick={onRemoveFromGarden}
             >
               <Check className="mr-2 h-4 w-4" />
@@ -104,9 +116,8 @@ export function PlantCard({
             </Button>
           ) : (
             <Button
-              variant="default"
               size="sm"
-              className="w-full"
+              className="w-full h-9"
               onClick={onAddToGarden}
             >
               <Plus className="mr-2 h-4 w-4" />

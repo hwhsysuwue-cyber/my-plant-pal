@@ -1,4 +1,4 @@
-import { Search as SearchIcon, X } from 'lucide-react';
+import { Search as SearchIcon, X, Filter } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,20 +35,27 @@ export function PlantFilters({
   const hasFilters = searchTerm || selectedCategory !== 'all' || selectedType !== 'all';
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-5 bg-card border border-border/50 rounded-2xl shadow-soft">
+      {/* Search Input */}
       <div className="relative">
-        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search plants by name..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-10 h-12 text-base bg-card border-border/50 focus:border-primary"
+          className="pl-11 h-11 text-base bg-background border-border/50 rounded-xl focus:ring-2 focus:ring-ring/20"
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+      {/* Filter Row */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground sm:hidden">
+          <Filter className="h-4 w-4" />
+          <span>Filters</span>
+        </div>
+        
         <Select value={selectedCategory} onValueChange={onCategoryChange}>
-          <SelectTrigger className="w-full sm:w-[180px] bg-card border-border/50">
+          <SelectTrigger className="w-full sm:w-[180px] h-10 bg-background border-border/50 rounded-xl">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -62,7 +69,7 @@ export function PlantFilters({
         </Select>
 
         <Select value={selectedType} onValueChange={onTypeChange}>
-          <SelectTrigger className="w-full sm:w-[180px] bg-card border-border/50">
+          <SelectTrigger className="w-full sm:w-[180px] h-10 bg-background border-border/50 rounded-xl">
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
@@ -76,9 +83,14 @@ export function PlantFilters({
         </Select>
 
         {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={onClear} className="h-10 w-full sm:w-auto">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={onClear} 
+            className="h-10 px-4 w-full sm:w-auto text-muted-foreground hover:text-foreground"
+          >
             <X className="mr-2 h-4 w-4" />
-            Clear Filters
+            Clear
           </Button>
         )}
       </div>

@@ -114,10 +114,14 @@ export default function Search() {
   if (!user) {
     return (
       <Layout>
-        <div className="container py-16 text-center">
-          <SearchIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-          <h1 className="font-display text-3xl font-semibold mb-2">Search Plants</h1>
-          <p className="text-muted-foreground mb-6">Please sign in to search our plant catalog</p>
+        <div className="container px-4 sm:px-6 py-20 text-center">
+          <div className="max-w-md mx-auto">
+            <div className="h-20 w-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
+              <SearchIcon className="h-10 w-10 text-muted-foreground" />
+            </div>
+            <h1 className="font-display text-3xl font-semibold mb-3">Search Plants</h1>
+            <p className="text-muted-foreground text-lg">Please sign in to search our plant catalog</p>
+          </div>
         </div>
       </Layout>
     );
@@ -125,14 +129,16 @@ export default function Search() {
 
   return (
     <Layout>
-      <div className="container py-8">
+      <div className="container px-4 sm:px-6 py-8 md:py-12">
+        {/* Page Header */}
         <div className="mb-8">
-          <h1 className="font-display text-3xl font-semibold mb-2">Search Plants</h1>
-          <p className="text-muted-foreground">
+          <h1 className="font-display text-3xl md:text-4xl font-semibold mb-2">Search Plants</h1>
+          <p className="text-muted-foreground text-lg">
             Discover the perfect plants for your space
           </p>
         </div>
 
+        {/* Filters */}
         <PlantFilters
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -145,39 +151,47 @@ export default function Search() {
           onClear={clearFilters}
         />
 
+        {/* Results */}
         {plantsLoading ? (
-          <div className="flex items-center justify-center py-16">
+          <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : filteredPlants.length === 0 ? (
-          <div className="text-center py-16">
-            <Leaf className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h2 className="font-display text-xl font-semibold mb-2">No plants found</h2>
+          <div className="text-center py-20">
+            <div className="h-20 w-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
+              <Leaf className="h-10 w-10 text-muted-foreground" />
+            </div>
+            <h2 className="font-display text-2xl font-semibold mb-2">No plants found</h2>
             <p className="text-muted-foreground">
               Try adjusting your search or filters
             </p>
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredPlants.map((plant) => (
-              <PlantCard
-                key={plant.id}
-                id={plant.id}
-                name={plant.name}
-                category={plant.category}
-                type={plant.type}
-                wateringSchedule={plant.watering_schedule}
-                sunlightRequirement={plant.sunlight_requirement}
-                soilType={plant.soil_type}
-                description={plant.description || undefined}
-                imageUrl={plant.image_url || undefined}
-                isInGarden={userGarden?.includes(plant.id)}
-                showGardenActions={!isAdmin}
-                onAddToGarden={() => handleAddToGarden(plant.id)}
-                onRemoveFromGarden={() => handleRemoveFromGarden(plant.id)}
-              />
-            ))}
-          </div>
+          <>
+            <p className="text-sm text-muted-foreground mt-6 mb-4">
+              {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {filteredPlants.map((plant) => (
+                <PlantCard
+                  key={plant.id}
+                  id={plant.id}
+                  name={plant.name}
+                  category={plant.category}
+                  type={plant.type}
+                  wateringSchedule={plant.watering_schedule}
+                  sunlightRequirement={plant.sunlight_requirement}
+                  soilType={plant.soil_type}
+                  description={plant.description || undefined}
+                  imageUrl={plant.image_url || undefined}
+                  isInGarden={userGarden?.includes(plant.id)}
+                  showGardenActions={!isAdmin}
+                  onAddToGarden={() => handleAddToGarden(plant.id)}
+                  onRemoveFromGarden={() => handleRemoveFromGarden(plant.id)}
+                />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </Layout>
