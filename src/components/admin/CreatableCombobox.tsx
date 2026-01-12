@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Check, Loader2, ChevronDown } from 'lucide-react';
+import { Check, Loader2, ChevronDown, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { toast } from '@/hooks/use-toast';
 
 interface CreatableComboboxProps {
   options: string[];
@@ -68,8 +69,17 @@ export function CreatableCombobox({
         await onCreateOption(trimmedInput);
         setRecentlyCreated(prev => [...prev, trimmedInput]);
         onChange(trimmedInput);
+        toast({
+          title: "Option created",
+          description: `"${trimmedInput}" has been added and selected.`,
+        });
       } catch (error) {
         console.error('Failed to create option:', error);
+        toast({
+          title: "Failed to create option",
+          description: "Please try again.",
+          variant: "destructive",
+        });
         // Revert to previous value on error
         setInputValue(value);
       }
@@ -175,16 +185,29 @@ export function CreatableCombobox({
           <div className="max-h-60 overflow-auto p-1">
             {canCreateNew && (
               <div
-                className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent text-primary font-medium"
+                className={cn(
+                  "flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent font-medium",
+                  isCreating ? "text-muted-foreground" : "text-primary"
+                )}
                 onMouseDown={(e) => {
                   e.preventDefault();
-                  handleCreateOrSelect();
+                  if (!isCreating) handleCreateOrSelect();
                 }}
               >
-                <span>Create "{trimmedInput}"</span>
-                <Badge variant="secondary" className="text-xs py-0 px-1">
-                  Enter
-                </Badge>
+                {isCreating ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Creating "{trimmedInput}"...</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4" />
+                    <span>Create "{trimmedInput}"</span>
+                    <Badge variant="secondary" className="text-xs py-0 px-1 ml-auto">
+                      Enter
+                    </Badge>
+                  </>
+                )}
               </div>
             )}
             
