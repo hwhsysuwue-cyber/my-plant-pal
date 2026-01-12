@@ -126,13 +126,13 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/30 glass">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full gradient-forest">
+        <Link to="/" className="flex items-center gap-2.5 transition-all duration-300 hover:opacity-80">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-forest shadow-soft">
             <Leaf className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="font-display text-xl font-semibold text-foreground">
+          <span className="font-display text-xl text-foreground">
             PlantCare
           </span>
         </Link>
