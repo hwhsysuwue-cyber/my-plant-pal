@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Layout } from '@/components/layout/Layout';
 import { PlantCard } from '@/components/plants/PlantCard';
 import { PlantFilters } from '@/components/plants/PlantFilters';
-import { Loader2, Search as SearchIcon, Leaf } from 'lucide-react';
+import { Loader2, Search as SearchIcon, Leaf, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Search() {
@@ -114,12 +114,12 @@ export default function Search() {
   if (!user) {
     return (
       <Layout>
-        <div className="container px-4 sm:px-6 py-20 text-center">
-          <div className="max-w-md mx-auto">
-            <div className="h-20 w-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
-              <SearchIcon className="h-10 w-10 text-muted-foreground" />
+        <div className="container px-4 sm:px-6 py-20 md:py-28 text-center">
+          <div className="max-w-md mx-auto animate-fade-in-up">
+            <div className="h-24 w-24 rounded-3xl bg-secondary flex items-center justify-center mx-auto mb-8 shadow-soft">
+              <SearchIcon className="h-12 w-12 text-muted-foreground" />
             </div>
-            <h1 className="font-display text-3xl font-semibold mb-3">Search Plants</h1>
+            <h1 className="font-display text-3xl md:text-4xl font-semibold mb-4">Search Plants</h1>
             <p className="text-muted-foreground text-lg">Please sign in to search our plant catalog</p>
           </div>
         </div>
@@ -129,11 +129,15 @@ export default function Search() {
 
   return (
     <Layout>
-      <div className="container px-4 sm:px-6 py-8 md:py-12">
+      <div className="container px-4 sm:px-6 py-10 md:py-14">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="font-display text-3xl md:text-4xl font-semibold mb-2">Search Plants</h1>
-          <p className="text-muted-foreground text-lg">
+        <div className="mb-10 animate-fade-in">
+          <div className="flex items-center gap-2 text-primary text-sm font-medium mb-3">
+            <Sparkles className="h-4 w-4" />
+            <span>Discover Plants</span>
+          </div>
+          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold mb-3">Search Plants</h1>
+          <p className="text-muted-foreground text-lg md:text-xl">
             Discover the perfect plants for your space
           </p>
         </div>
@@ -153,42 +157,50 @@ export default function Search() {
 
         {/* Results */}
         {plantsLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="flex flex-col items-center justify-center py-24 animate-fade-in">
+            <div className="relative">
+              <div className="h-16 w-16 rounded-2xl bg-primary/10 animate-pulse-soft" />
+              <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            </div>
+            <p className="text-muted-foreground mt-4">Loading plants...</p>
           </div>
         ) : filteredPlants.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="h-20 w-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
-              <Leaf className="h-10 w-10 text-muted-foreground" />
+          <div className="text-center py-24 animate-fade-in-up">
+            <div className="h-24 w-24 rounded-3xl bg-secondary flex items-center justify-center mx-auto mb-8 shadow-soft">
+              <Leaf className="h-12 w-12 text-muted-foreground" />
             </div>
-            <h2 className="font-display text-2xl font-semibold mb-2">No plants found</h2>
-            <p className="text-muted-foreground">
+            <h2 className="font-display text-2xl md:text-3xl font-semibold mb-3">No plants found</h2>
+            <p className="text-muted-foreground text-lg">
               Try adjusting your search or filters
             </p>
           </div>
         ) : (
           <>
-            <p className="text-sm text-muted-foreground mt-6 mb-4">
-              {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {filteredPlants.map((plant) => (
-                <PlantCard
-                  key={plant.id}
-                  id={plant.id}
-                  name={plant.name}
-                  category={plant.category}
-                  type={plant.type}
-                  wateringSchedule={plant.watering_schedule}
-                  sunlightRequirement={plant.sunlight_requirement}
-                  soilType={plant.soil_type}
-                  description={plant.description || undefined}
-                  imageUrl={plant.image_url || undefined}
-                  isInGarden={userGarden?.includes(plant.id)}
-                  showGardenActions={!isAdmin}
-                  onAddToGarden={() => handleAddToGarden(plant.id)}
-                  onRemoveFromGarden={() => handleRemoveFromGarden(plant.id)}
-                />
+            <div className="flex items-center justify-between mt-8 mb-6 animate-fade-in">
+              <p className="text-muted-foreground">
+                <span className="font-semibold text-foreground">{filteredPlants.length}</span>{' '}
+                plant{filteredPlants.length !== 1 ? 's' : ''} found
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredPlants.map((plant, index) => (
+                <div key={plant.id} className={`stagger-${Math.min(index % 8 + 1, 8)}`}>
+                  <PlantCard
+                    id={plant.id}
+                    name={plant.name}
+                    category={plant.category}
+                    type={plant.type}
+                    wateringSchedule={plant.watering_schedule}
+                    sunlightRequirement={plant.sunlight_requirement}
+                    soilType={plant.soil_type}
+                    description={plant.description || undefined}
+                    imageUrl={plant.image_url || undefined}
+                    isInGarden={userGarden?.includes(plant.id)}
+                    showGardenActions={!isAdmin}
+                    onAddToGarden={() => handleAddToGarden(plant.id)}
+                    onRemoveFromGarden={() => handleRemoveFromGarden(plant.id)}
+                  />
+                </div>
               ))}
             </div>
           </>
