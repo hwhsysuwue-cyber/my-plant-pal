@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Leaf, Loader2, ArrowLeft } from 'lucide-react';
+import { Leaf, Loader2, ArrowLeft, Sparkles, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -33,6 +33,8 @@ export default function Auth() {
   const modeParam = searchParams.get('mode');
   const [mode, setModeState] = useState<'signin' | 'signup'>(modeParam === 'signup' ? 'signup' : 'signin');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { signIn, signUp, user, isAdmin, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -80,83 +82,186 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center gradient-hero p-4">
-      <div className="w-full max-w-md">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors text-sm">
-          <ArrowLeft className="h-4 w-4" />
+    <div className="min-h-screen flex items-center justify-center gradient-hero p-4 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 pattern-dots opacity-40" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl -translate-y-1/2 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl translate-y-1/2 -translate-x-1/4" />
+      
+      <div className="w-full max-w-md relative z-10 animate-fade-in-up">
+        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors text-sm group">
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
           Back to home
         </Link>
 
-        <Card className="shadow-card border-border/50">
-          <CardHeader className="text-center pb-2">
-            <div className="flex justify-center mb-5">
-              <div className="h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-soft">
-                <Leaf className="h-7 w-7 text-primary-foreground" />
+        <Card className="shadow-hero border-border/40 rounded-3xl overflow-hidden">
+          {/* Decorative top border */}
+          <div className="h-1 gradient-forest" />
+          
+          <CardHeader className="text-center pt-10 pb-6">
+            <div className="flex justify-center mb-6">
+              <div className="h-16 w-16 rounded-2xl gradient-forest flex items-center justify-center shadow-colored animate-float">
+                <Leaf className="h-8 w-8 text-primary-foreground" />
               </div>
             </div>
-            <CardTitle className="font-display text-2xl">
-              {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
+            <CardTitle className="font-display text-3xl">
+              {mode === 'signin' ? 'Welcome Back' : 'Join PlantCare'}
             </CardTitle>
-            <CardDescription className="text-base">
-              {mode === 'signin' ? 'Sign in to your account' : 'Get started with PlantCare'}
+            <CardDescription className="text-base mt-2">
+              {mode === 'signin' ? 'Sign in to continue your plant journey' : 'Create your account and start growing'}
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="pt-6">
+          <CardContent className="px-8 pb-10">
             {mode === 'signin' ? (
-              <form onSubmit={signInForm.handleSubmit(handleSignIn)} className="space-y-4" noValidate>
+              <form onSubmit={signInForm.handleSubmit(handleSignIn)} className="space-y-5" noValidate>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
-                  <Input id="signin-email" placeholder="you@example.com" type="email" className="h-11" {...signInForm.register('email')} />
-                  {signInForm.formState.errors.email && <p className="text-sm text-destructive">{signInForm.formState.errors.email.message}</p>}
+                  <Label htmlFor="signin-email" className="text-sm font-medium">Email</Label>
+                  <Input 
+                    id="signin-email" 
+                    placeholder="you@example.com" 
+                    type="email" 
+                    className="h-12 rounded-xl border-border/50 focus:border-primary/30 focus:ring-2 focus:ring-primary/15 transition-all" 
+                    {...signInForm.register('email')} 
+                  />
+                  {signInForm.formState.errors.email && (
+                    <p className="text-sm text-destructive animate-fade-in">{signInForm.formState.errors.email.message}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
-                  <Input id="signin-password" placeholder="••••••••" type="password" className="h-11" {...signInForm.register('password')} />
-                  {signInForm.formState.errors.password && <p className="text-sm text-destructive">{signInForm.formState.errors.password.message}</p>}
+                  <Label htmlFor="signin-password" className="text-sm font-medium">Password</Label>
+                  <div className="relative">
+                    <Input 
+                      id="signin-password" 
+                      placeholder="••••••••" 
+                      type={showPassword ? 'text' : 'password'} 
+                      className="h-12 rounded-xl border-border/50 focus:border-primary/30 focus:ring-2 focus:ring-primary/15 transition-all pr-12" 
+                      {...signInForm.register('password')} 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {signInForm.formState.errors.password && (
+                    <p className="text-sm text-destructive animate-fade-in">{signInForm.formState.errors.password.message}</p>
+                  )}
                 </div>
-                <Button type="submit" className="w-full h-11" disabled={isLoading}>
-                  {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Signing in...</> : 'Sign In'}
+                <Button type="submit" className="w-full h-12 rounded-xl text-base shadow-colored hover:shadow-glow transition-all duration-300" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    'Sign In'
+                  )}
                 </Button>
               </form>
             ) : (
-              <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-4" noValidate>
+              <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-5" noValidate>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-fullname">Full Name</Label>
-                  <Input id="signup-fullname" placeholder="Jane Doe" className="h-11" {...signUpForm.register('fullName')} />
-                  {signUpForm.formState.errors.fullName && <p className="text-sm text-destructive">{signUpForm.formState.errors.fullName.message}</p>}
+                  <Label htmlFor="signup-fullname" className="text-sm font-medium">Full Name</Label>
+                  <Input 
+                    id="signup-fullname" 
+                    placeholder="Jane Doe" 
+                    className="h-12 rounded-xl border-border/50 focus:border-primary/30 focus:ring-2 focus:ring-primary/15 transition-all" 
+                    {...signUpForm.register('fullName')} 
+                  />
+                  {signUpForm.formState.errors.fullName && (
+                    <p className="text-sm text-destructive animate-fade-in">{signUpForm.formState.errors.fullName.message}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
-                  <Input id="signup-email" placeholder="you@example.com" type="email" className="h-11" {...signUpForm.register('email')} />
-                  {signUpForm.formState.errors.email && <p className="text-sm text-destructive">{signUpForm.formState.errors.email.message}</p>}
+                  <Label htmlFor="signup-email" className="text-sm font-medium">Email</Label>
+                  <Input 
+                    id="signup-email" 
+                    placeholder="you@example.com" 
+                    type="email" 
+                    className="h-12 rounded-xl border-border/50 focus:border-primary/30 focus:ring-2 focus:ring-primary/15 transition-all" 
+                    {...signUpForm.register('email')} 
+                  />
+                  {signUpForm.formState.errors.email && (
+                    <p className="text-sm text-destructive animate-fade-in">{signUpForm.formState.errors.email.message}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
-                  <Input id="signup-password" placeholder="••••••••" type="password" className="h-11" {...signUpForm.register('password')} />
-                  {signUpForm.formState.errors.password && <p className="text-sm text-destructive">{signUpForm.formState.errors.password.message}</p>}
+                  <Label htmlFor="signup-password" className="text-sm font-medium">Password</Label>
+                  <div className="relative">
+                    <Input 
+                      id="signup-password" 
+                      placeholder="••••••••" 
+                      type={showPassword ? 'text' : 'password'} 
+                      className="h-12 rounded-xl border-border/50 focus:border-primary/30 focus:ring-2 focus:ring-primary/15 transition-all pr-12" 
+                      {...signUpForm.register('password')} 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {signUpForm.formState.errors.password && (
+                    <p className="text-sm text-destructive animate-fade-in">{signUpForm.formState.errors.password.message}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-confirm">Confirm Password</Label>
-                  <Input id="signup-confirm" placeholder="••••••••" type="password" className="h-11" {...signUpForm.register('confirmPassword')} />
-                  {signUpForm.formState.errors.confirmPassword && <p className="text-sm text-destructive">{signUpForm.formState.errors.confirmPassword.message}</p>}
+                  <Label htmlFor="signup-confirm" className="text-sm font-medium">Confirm Password</Label>
+                  <div className="relative">
+                    <Input 
+                      id="signup-confirm" 
+                      placeholder="••••••••" 
+                      type={showConfirmPassword ? 'text' : 'password'} 
+                      className="h-12 rounded-xl border-border/50 focus:border-primary/30 focus:ring-2 focus:ring-primary/15 transition-all pr-12" 
+                      {...signUpForm.register('confirmPassword')} 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {signUpForm.formState.errors.confirmPassword && (
+                    <p className="text-sm text-destructive animate-fade-in">{signUpForm.formState.errors.confirmPassword.message}</p>
+                  )}
                 </div>
-                <Button type="submit" className="w-full h-11" disabled={isLoading}>
-                  {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Creating account...</> : 'Create Account'}
+                <Button type="submit" className="w-full h-12 rounded-xl text-base shadow-colored hover:shadow-glow transition-all duration-300" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Creating account...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Create Account
+                    </>
+                  )}
                 </Button>
               </form>
             )}
 
-            <div className="mt-6 text-center text-sm">
+            <div className="mt-8 pt-6 border-t border-border/40 text-center">
               {mode === 'signin' ? (
                 <p className="text-muted-foreground">
                   Don't have an account?{' '}
-                  <button onClick={() => setMode('signup')} className="text-primary font-medium hover:underline">Sign up</button>
+                  <button onClick={() => setMode('signup')} className="text-primary font-medium hover:underline transition-colors">
+                    Sign up for free
+                  </button>
                 </p>
               ) : (
                 <p className="text-muted-foreground">
                   Already have an account?{' '}
-                  <button onClick={() => setMode('signin')} className="text-primary font-medium hover:underline">Sign in</button>
+                  <button onClick={() => setMode('signin')} className="text-primary font-medium hover:underline transition-colors">
+                    Sign in
+                  </button>
                 </p>
               )}
             </div>
