@@ -10,6 +10,7 @@ interface AuthContextType {
   role: AppRole | null;
   isLoading: boolean;
   isAdmin: boolean;
+  isEmailVerified: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -102,6 +103,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRole(null);
   };
 
+  const isEmailVerified = Boolean(user?.email_confirmed_at);
+
   return (
     <AuthContext.Provider
       value={{
@@ -110,6 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         role,
         isLoading,
         isAdmin: role === 'admin',
+        isEmailVerified,
         signIn,
         signUp,
         signOut,
@@ -130,6 +134,7 @@ export function useAuth(): AuthContextType {
       role: null,
       isLoading: true,
       isAdmin: false,
+      isEmailVerified: false,
       signIn: async () => ({ error: new Error('Auth not initialized') }),
       signUp: async () => ({ error: new Error('Auth not initialized') }),
       signOut: async () => {},
