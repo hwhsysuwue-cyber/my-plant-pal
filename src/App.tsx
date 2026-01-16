@@ -7,7 +7,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import VerifyEmail from "./pages/VerifyEmail";
+
 import Search from "./pages/Search";
 import MyGarden from "./pages/MyGarden";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -31,7 +31,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
+            
             <Route path="/search" element={<Search />} />
             <Route path="/plants/:id" element={<PlantDetails />} />
             <Route
