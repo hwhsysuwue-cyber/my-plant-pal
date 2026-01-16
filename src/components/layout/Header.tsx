@@ -42,7 +42,7 @@ export function Header() {
       : "text-primary bg-primary/10";
     
     const inactiveClass = mobile
-      ? "hover:bg-secondary"
+      ? "hover:bg-secondary hover:translate-x-1"
       : "text-muted-foreground hover:text-foreground hover:bg-secondary";
 
     const getLinkClass = (path: string) => 
@@ -55,7 +55,7 @@ export function Header() {
           className={getLinkClass('/')}
           onClick={() => mobile && setMobileMenuOpen(false)}
         >
-          <Home className="h-4 w-4" />
+          <Home className="h-4 w-4 transition-transform group-hover:scale-110" />
           <span>Home</span>
         </Link>
         <Link
@@ -63,7 +63,7 @@ export function Header() {
           className={getLinkClass('/search')}
           onClick={() => mobile && setMobileMenuOpen(false)}
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-4 w-4 transition-transform group-hover:scale-110" />
           <span>Search</span>
         </Link>
         {user && !isAdmin && (
@@ -73,7 +73,7 @@ export function Header() {
               className={getLinkClass('/my-garden')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <Leaf className="h-4 w-4" />
+              <Leaf className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>My Garden</span>
             </Link>
             <Link
@@ -81,7 +81,7 @@ export function Header() {
               className={getLinkClass('/reminders')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <Bell className="h-4 w-4" />
+              <Bell className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>Reminders</span>
             </Link>
             <Link
@@ -89,7 +89,7 @@ export function Header() {
               className={getLinkClass('/feedback')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <MessageSquare className="h-4 w-4" />
+              <MessageSquare className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>Feedback</span>
             </Link>
           </>
@@ -101,7 +101,7 @@ export function Header() {
               className={getLinkClass('/admin')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <Settings className="h-4 w-4" />
+              <Settings className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>Plants</span>
             </Link>
             <Link
@@ -109,7 +109,7 @@ export function Header() {
               className={getLinkClass('/admin/users')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <Users className="h-4 w-4" />
+              <Users className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>Users</span>
             </Link>
             <Link
@@ -117,7 +117,7 @@ export function Header() {
               className={getLinkClass('/admin/reminders')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <Bell className="h-4 w-4" />
+              <Bell className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>Reminders</span>
             </Link>
             <Link
@@ -125,7 +125,7 @@ export function Header() {
               className={getLinkClass('/admin/feedback')}
               onClick={() => mobile && setMobileMenuOpen(false)}
             >
-              <MessageSquare className="h-4 w-4" />
+              <MessageSquare className="h-4 w-4 transition-transform group-hover:scale-110" />
               <span>Feedback</span>
             </Link>
           </>
@@ -135,12 +135,12 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 animate-slide-in-down">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-80">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary">
-            <Leaf className="h-5 w-5 text-white" />
+        <Link to="/" className="flex items-center gap-2.5 transition-all duration-200 hover:opacity-80 group">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary transition-transform duration-200 group-hover:scale-105">
+            <Leaf className="h-5 w-5 text-white transition-transform duration-200 group-hover:rotate-12" />
           </div>
           <span className="text-lg font-bold text-foreground">
             PlantCare
@@ -159,11 +159,11 @@ export function Header() {
               {/* User Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-full h-9 w-9">
+                  <Button variant="outline" size="icon" className="rounded-full h-9 w-9 transition-all duration-200 hover:scale-105 hover:shadow-soft">
                     <User className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 rounded-xl p-2">
+                <DropdownMenuContent align="end" className="w-56 rounded-xl p-2 animate-scale-in">
                   <div className="px-3 py-2.5 bg-secondary/50 rounded-lg mb-2">
                     <p className="text-sm font-medium truncate">{user.email}</p>
                     <p className="text-xs text-muted-foreground capitalize mt-0.5">
@@ -173,11 +173,11 @@ export function Header() {
                   <DropdownMenuSeparator className="my-1" />
                   {!isAdmin && (
                     <>
-                      <DropdownMenuItem onClick={() => navigate('/my-garden')} className="rounded-lg cursor-pointer">
+                      <DropdownMenuItem onClick={() => navigate('/my-garden')} className="rounded-lg cursor-pointer transition-colors">
                         <Leaf className="mr-2 h-4 w-4" />
                         My Garden
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => navigate('/reminders')} className="rounded-lg cursor-pointer">
+                      <DropdownMenuItem onClick={() => navigate('/reminders')} className="rounded-lg cursor-pointer transition-colors">
                         <Bell className="mr-2 h-4 w-4" />
                         Reminders
                       </DropdownMenuItem>
@@ -185,18 +185,18 @@ export function Header() {
                   )}
                   {isAdmin && (
                     <>
-                      <DropdownMenuItem onClick={() => navigate('/admin')} className="rounded-lg cursor-pointer">
+                      <DropdownMenuItem onClick={() => navigate('/admin')} className="rounded-lg cursor-pointer transition-colors">
                         <Settings className="mr-2 h-4 w-4" />
                         Manage Plants
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => navigate('/admin/users')} className="rounded-lg cursor-pointer">
+                      <DropdownMenuItem onClick={() => navigate('/admin/users')} className="rounded-lg cursor-pointer transition-colors">
                         <Users className="mr-2 h-4 w-4" />
                         Manage Users
                       </DropdownMenuItem>
                     </>
                   )}
                   <DropdownMenuSeparator className="my-1" />
-                  <DropdownMenuItem onClick={handleSignOut} className="rounded-lg cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">
+                  <DropdownMenuItem onClick={handleSignOut} className="rounded-lg cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10 transition-colors">
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>
@@ -206,7 +206,7 @@ export function Header() {
               {/* Mobile Menu Button */}
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild className="md:hidden">
-                  <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg">
+                  <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg transition-transform hover:scale-105">
                     <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
@@ -229,20 +229,20 @@ export function Header() {
             <>
               {/* Auth buttons */}
               <div className="hidden sm:flex items-center gap-2">
-                <Button variant="ghost" className="h-9 px-4 rounded-lg" onClick={() => navigate('/auth')}>
+                <Button variant="ghost" className="h-9 px-4 rounded-lg press-effect" onClick={() => navigate('/auth')}>
                   Sign In
                 </Button>
-                <Button className="h-9 px-4 rounded-lg shadow-glow hover:shadow-glow-lg transition-all" onClick={() => navigate('/auth?mode=signup')}>
+                <Button className="h-9 px-4 rounded-lg shadow-glow hover:shadow-glow-lg transition-all press-effect" onClick={() => navigate('/auth?mode=signup')}>
                   Get Started
                 </Button>
               </div>
 
               {/* Mobile auth buttons */}
               <div className="flex sm:hidden items-center gap-2">
-                <Button variant="ghost" size="sm" className="rounded-lg" onClick={() => navigate('/auth')}>
+                <Button variant="ghost" size="sm" className="rounded-lg press-effect" onClick={() => navigate('/auth')}>
                   Sign In
                 </Button>
-                <Button size="sm" className="rounded-lg" onClick={() => navigate('/auth?mode=signup')}>
+                <Button size="sm" className="rounded-lg press-effect" onClick={() => navigate('/auth?mode=signup')}>
                   Sign Up
                 </Button>
               </div>

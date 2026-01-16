@@ -64,8 +64,12 @@ export default function PlantDetails() {
   if (isLoading) {
     return (
       <Layout>
-        <div className="container py-16 flex justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="container py-16 flex flex-col items-center justify-center animate-fade-in">
+          <div className="relative">
+            <div className="h-16 w-16 rounded-2xl bg-primary/10 animate-pulse-soft" />
+            <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+          </div>
+          <p className="text-muted-foreground mt-4">Loading plant details...</p>
         </div>
       </Layout>
     );
@@ -74,11 +78,13 @@ export default function PlantDetails() {
   if (!plant) {
     return (
       <Layout>
-        <div className="container py-16 text-center">
-          <Leaf className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+        <div className="container py-16 text-center animate-fade-in-up">
+          <div className="h-24 w-24 rounded-3xl bg-secondary flex items-center justify-center mx-auto mb-6 hover-scale">
+            <Leaf className="h-12 w-12 text-muted-foreground" />
+          </div>
           <h1 className="font-display text-2xl font-semibold mb-2">Plant Not Found</h1>
           <p className="text-muted-foreground mb-6">This plant doesn't exist or has been removed.</p>
-          <Button onClick={() => navigate('/search')}>
+          <Button onClick={() => navigate('/search')} className="press-effect">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Search
           </Button>
@@ -90,35 +96,39 @@ export default function PlantDetails() {
   return (
     <Layout>
       <div className="container py-8 max-w-4xl">
-        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate(-1)} 
+          className="mb-6 animate-fade-in-left group"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
           Back
         </Button>
 
         <div className="grid gap-8 md:grid-cols-2">
           {/* Plant Image */}
-          <div className="aspect-square rounded-xl overflow-hidden bg-secondary">
+          <div className="aspect-square rounded-2xl overflow-hidden bg-secondary animate-fade-in-up shadow-soft">
             {plant.image_url ? (
               <img
                 src={plant.image_url}
                 alt={plant.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <Leaf className="h-24 w-24 text-muted-foreground" />
+                <Leaf className="h-24 w-24 text-muted-foreground animate-float" />
               </div>
             )}
           </div>
 
           {/* Plant Info */}
-          <div>
+          <div className="animate-fade-in-right">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
                 <h1 className="font-display text-3xl font-semibold mb-2">{plant.name}</h1>
                 <div className="flex gap-2">
-                  <Badge variant="secondary">{plant.category}</Badge>
-                  <Badge variant="outline">{plant.type}</Badge>
+                  <Badge variant="secondary" className="animate-scale-in">{plant.category}</Badge>
+                  <Badge variant="outline" className="animate-scale-in stagger-1">{plant.type}</Badge>
                 </div>
               </div>
               {user && !isAdmin && (
@@ -126,6 +136,7 @@ export default function PlantDetails() {
                   onClick={() => addToGardenMutation.mutate()}
                   disabled={isInGarden || addToGardenMutation.isPending}
                   variant={isInGarden ? 'secondary' : 'default'}
+                  className="press-effect shadow-glow hover:shadow-glow-lg transition-all animate-fade-in stagger-2"
                 >
                   {isInGarden ? (
                     <>
@@ -143,14 +154,16 @@ export default function PlantDetails() {
             </div>
 
             {plant.description && (
-              <p className="text-muted-foreground mb-6">{plant.description}</p>
+              <p className="text-muted-foreground mb-6 animate-fade-in stagger-1">{plant.description}</p>
             )}
 
             <div className="space-y-4">
-              <Card>
+              <Card className="animate-fade-in-up stagger-2 hover-lift group">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Droplets className="h-4 w-4 text-blue-500" />
+                    <div className="h-8 w-8 rounded-lg bg-water/10 flex items-center justify-center group-hover:bg-water/20 transition-colors">
+                      <Droplets className="h-4 w-4 text-water icon-hover-rotate" />
+                    </div>
                     Watering
                   </CardTitle>
                 </CardHeader>
@@ -166,10 +179,12 @@ export default function PlantDetails() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="animate-fade-in-up stagger-3 hover-lift group">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Sun className="h-4 w-4 text-yellow-500" />
+                    <div className="h-8 w-8 rounded-lg bg-sun/10 flex items-center justify-center group-hover:bg-sun/20 transition-colors">
+                      <Sun className="h-4 w-4 text-sun icon-hover-rotate" />
+                    </div>
                     Sunlight
                   </CardTitle>
                 </CardHeader>
@@ -185,10 +200,12 @@ export default function PlantDetails() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="animate-fade-in-up stagger-4 hover-lift group">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Flower2 className="h-4 w-4 text-amber-600" />
+                    <div className="h-8 w-8 rounded-lg bg-terracotta/10 flex items-center justify-center group-hover:bg-terracotta/20 transition-colors">
+                      <Flower2 className="h-4 w-4 text-terracotta icon-hover-rotate" />
+                    </div>
                     Soil Type
                   </CardTitle>
                 </CardHeader>
