@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requireAdmin, requireUser }: ProtectedRouteProps) {
-  const { user, isAdmin, isLoading, role, isEmailVerified } = useAuth();
+  const { user, isAdmin, isLoading, role } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -26,11 +26,6 @@ export function ProtectedRoute({ children, requireAdmin, requireUser }: Protecte
 
   if (!user) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
-  }
-
-  // Check email verification - redirect unverified users
-  if (!isEmailVerified) {
-    return <Navigate to="/verify-email" state={{ email: user.email }} replace />;
   }
 
   // Admin routes: only accessible by admins

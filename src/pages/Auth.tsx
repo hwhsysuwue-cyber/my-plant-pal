@@ -77,8 +77,7 @@ export default function Auth() {
     if (error) {
       toast.error(error.message.includes('already registered') ? 'This email is already registered.' : error.message);
     } else {
-      toast.success('Account created! Please check your email to verify.');
-      navigate('/verify-email', { state: { email: values.email } });
+      toast.success('Account created successfully!');
     }
   };
 
