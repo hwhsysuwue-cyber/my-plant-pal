@@ -302,6 +302,60 @@
   .stagger-6 { animation-delay: 300ms; }
   .stagger-7 { animation-delay: 350ms; }
   .stagger-8 { animation-delay: 400ms; }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+  .hover-lift:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Hover scale effect */
+  .hover-scale {
+    @apply transition-transform duration-200;
+  }
+  .hover-scale:hover {
+    @apply scale-105;
+  }
+
+  /* Hover glow effect */
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Icon hover rotate */
+  .icon-hover-rotate {
+    @apply transition-transform duration-300;
+  }
+  .group:hover .icon-hover-rotate {
+    @apply rotate-12;
+  }
+
+  /* Button press effect */
+  .press-effect {
+    @apply transition-transform duration-100 active:scale-95;
+  }
+
+  /* Card hover border */
+  .card-hover-border {
+    @apply transition-all duration-300 border-transparent;
+  }
+  .card-hover-border:hover {
+    @apply border-primary/30;
+  }
+
+  /* Animate on scroll trigger class (to be used with JS) */
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-4;
+  }
+  .animate-on-scroll.visible {
+    @apply opacity-100 translate-y-0 transition-all duration-500;
+  }
 }
 
 /* Custom scrollbar */
