@@ -5,7 +5,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Layout } from '@/components/layout/Layout';
 import { PlantCard } from '@/components/plants/PlantCard';
 import { PlantFilters } from '@/components/plants/PlantFilters';
-import { Loader2, Search as SearchIcon, Leaf, Sparkles } from 'lucide-react';
+import { PlantGridSkeleton } from '@/components/skeletons/PlantCardSkeleton';
+import { Search as SearchIcon, Leaf, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Search() {
@@ -157,12 +158,8 @@ export default function Search() {
 
         {/* Results */}
         {plantsLoading ? (
-          <div className="flex flex-col items-center justify-center py-24 animate-fade-in">
-            <div className="relative">
-              <div className="h-16 w-16 rounded-2xl bg-primary/10 animate-pulse-soft" />
-              <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-            </div>
-            <p className="text-muted-foreground mt-4">Loading plants...</p>
+          <div className="mt-8">
+            <PlantGridSkeleton count={8} />
           </div>
         ) : filteredPlants.length === 0 ? (
           <div className="text-center py-24 animate-fade-in-up">

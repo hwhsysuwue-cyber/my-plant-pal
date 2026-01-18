@@ -6,7 +6,8 @@ import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, ArrowLeft, Droplets, Sun, Flower2, Leaf, Plus, Check } from 'lucide-react';
+import { PlantDetailsSkeleton } from '@/components/skeletons/PlantDetailsSkeleton';
+import { ArrowLeft, Droplets, Sun, Flower2, Leaf, Plus, Check } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function PlantDetails() {
@@ -64,13 +65,7 @@ export default function PlantDetails() {
   if (isLoading) {
     return (
       <Layout>
-        <div className="container py-16 flex flex-col items-center justify-center animate-fade-in">
-          <div className="relative">
-            <div className="h-16 w-16 rounded-2xl bg-primary/10 animate-pulse-soft" />
-            <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-          </div>
-          <p className="text-muted-foreground mt-4">Loading plant details...</p>
-        </div>
+        <PlantDetailsSkeleton />
       </Layout>
     );
   }
