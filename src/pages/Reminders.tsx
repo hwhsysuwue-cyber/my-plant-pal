@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ReminderListSkeleton } from '@/components/skeletons/ReminderCardSkeleton';
+import { PullToRefresh } from '@/components/ui/pull-to-refresh';
 import { Bell, Check, Droplets, Sun, Leaf, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { format, isToday, isTomorrow, isPast, addDays } from 'date-fns';
@@ -131,6 +133,12 @@ export default function Reminders() {
     return <Leaf className="h-4 w-4 text-leaf" />;
   };
 
+  const handleRefresh = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['user-reminders'] });
+    await queryClient.invalidateQueries({ queryKey: ['reminder-templates'] });
+    toast.success('Reminders refreshed!');
+  }, [queryClient]);
+
   if (!user) {
     return (
       <Layout>
@@ -147,7 +155,8 @@ export default function Reminders() {
 
   return (
     <Layout>
-      <div className="container px-4 sm:px-6 py-10 md:py-14 max-w-4xl">
+      <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
+        <div className="container px-4 sm:px-6 py-10 md:py-14 max-w-4xl">
         {/* Page Header */}
         <div className="mb-10 animate-fade-in">
           <div className="flex items-center gap-2 text-primary text-sm font-medium mb-3">
@@ -303,7 +312,8 @@ export default function Reminders() {
             )}
           </div>
         )}
-      </div>
+        </div>
+      </PullToRefresh>
     </Layout>
   );
 }

@@ -1,16 +1,18 @@
-import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useMemo, useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Layout } from '@/components/layout/Layout';
 import { PlantCard } from '@/components/plants/PlantCard';
 import { PlantFilters } from '@/components/plants/PlantFilters';
 import { PlantGridSkeleton } from '@/components/skeletons/PlantCardSkeleton';
+import { PullToRefresh } from '@/components/ui/pull-to-refresh';
 import { Search as SearchIcon, Leaf, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Search() {
   const { user, isAdmin } = useAuth();
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
@@ -112,6 +114,12 @@ export default function Search() {
     setSelectedType('all');
   };
 
+  const handleRefresh = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['plants'] });
+    await refetchGarden();
+    toast.success('Plants refreshed!');
+  }, [queryClient, refetchGarden]);
+
   if (!user) {
     return (
       <Layout>
@@ -130,7 +138,8 @@ export default function Search() {
 
   return (
     <Layout>
-      <div className="container px-4 sm:px-6 py-10 md:py-14">
+      <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
+        <div className="container px-4 sm:px-6 py-10 md:py-14">
         {/* Page Header */}
         <div className="mb-10 animate-fade-in">
           <div className="flex items-center gap-2 text-primary text-sm font-medium mb-3">
@@ -202,7 +211,8 @@ export default function Search() {
             </div>
           </>
         )}
-      </div>
+        </div>
+      </PullToRefresh>
     </Layout>
   );
 }
