@@ -5,7 +5,8 @@ import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Bell, Check, Droplets, Sun, Leaf, Sparkles } from 'lucide-react';
+import { ReminderListSkeleton } from '@/components/skeletons/ReminderCardSkeleton';
+import { Bell, Check, Droplets, Sun, Leaf, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { format, isToday, isTomorrow, isPast, addDays } from 'date-fns';
 
@@ -160,12 +161,11 @@ export default function Reminders() {
         </div>
 
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-24 animate-fade-in">
-            <div className="relative">
-              <div className="h-16 w-16 rounded-2xl bg-primary/10 animate-pulse-soft" />
-              <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+          <div className="space-y-8">
+            <div>
+              <h2 className="font-display text-xl font-semibold mb-4">Upcoming Reminders</h2>
+              <ReminderListSkeleton count={3} />
             </div>
-            <p className="text-muted-foreground mt-4">Loading reminders...</p>
           </div>
         ) : (
           <div className="space-y-8">
