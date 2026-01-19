@@ -252,23 +252,23 @@ export default function AdminReminders() {
 
   return (
     <Layout>
-      <div className="container py-8">
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8 flex flex-col gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full gradient-forest flex items-center justify-center">
-              <Bell className="h-6 w-6 text-primary-foreground" />
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full gradient-forest flex items-center justify-center flex-shrink-0">
+              <Bell className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
             </div>
-            <div>
-              <h1 className="font-display text-3xl font-semibold">Reminders Management</h1>
-              <p className="text-muted-foreground">Manage templates and assign reminders to users</p>
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl sm:text-3xl font-semibold">Reminders Management</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">Manage templates and assign reminders</p>
             </div>
           </div>
         </div>
 
         <Tabs defaultValue="assigned" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="assigned">Assigned Reminders</TabsTrigger>
-            <TabsTrigger value="templates">Templates</TabsTrigger>
+          <TabsList className="w-full sm:w-auto">
+            <TabsTrigger value="assigned" className="flex-1 sm:flex-none">Assigned Reminders</TabsTrigger>
+            <TabsTrigger value="templates" className="flex-1 sm:flex-none">Templates</TabsTrigger>
           </TabsList>
 
           {/* Assigned Reminders Tab */}
@@ -296,12 +296,12 @@ export default function AdminReminders() {
                 {allReminders.map((reminder: any) => (
                   <Card key={reminder.id}>
                     <CardContent className="py-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <p className="font-medium">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-medium truncate">
                             {reminder.profiles?.full_name || reminder.profiles?.email || 'Unknown User'}
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-muted-foreground truncate">
                             {reminder.plants?.name} • {reminder.reminder_templates?.name || 'Custom'}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -312,7 +312,7 @@ export default function AdminReminders() {
                           variant="ghost"
                           size="icon"
                           onClick={() => deleteReminderMutation.mutate(reminder.id)}
-                          className="text-destructive hover:text-destructive"
+                          className="text-destructive hover:text-destructive self-end sm:self-auto flex-shrink-0"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

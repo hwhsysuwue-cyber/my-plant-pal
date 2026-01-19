@@ -76,21 +76,21 @@ export default function Index() {
             </div>
 
             {/* Stats */}
-            <div className="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto animate-fade-in-up stagger-3">
-              <div className="stat-card">
-                <div className="text-2xl md:text-3xl font-bold text-foreground">500+</div>
-                <div className="text-sm text-muted-foreground mt-1">Plants</div>
+            <div className="mt-12 sm:mt-16 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto animate-fade-in-up stagger-3">
+              <div className="stat-card px-2 sm:px-4 py-3 sm:py-4">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">500+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground mt-1">Plants</div>
               </div>
-              <div className="stat-card">
-                <div className="text-2xl md:text-3xl font-bold text-foreground">10k+</div>
-                <div className="text-sm text-muted-foreground mt-1">Users</div>
+              <div className="stat-card px-2 sm:px-4 py-3 sm:py-4">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">10k+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground mt-1">Users</div>
               </div>
-              <div className="stat-card">
-                <div className="text-2xl md:text-3xl font-bold text-foreground flex items-center justify-center gap-1">
+              <div className="stat-card px-2 sm:px-4 py-3 sm:py-4">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground flex items-center justify-center gap-1">
                   4.9
-                  <Star className="h-5 w-5 fill-sun text-sun" />
+                  <Star className="h-4 w-4 sm:h-5 sm:w-5 fill-sun text-sun" />
                 </div>
-                <div className="text-sm text-muted-foreground mt-1">Rating</div>
+                <div className="text-xs sm:text-sm text-muted-foreground mt-1">Rating</div>
               </div>
             </div>
           </div>
@@ -233,21 +233,21 @@ export default function Index() {
       {!user && (
         <section className="section">
           <div className="container px-4 sm:px-6">
-            <div className="relative overflow-hidden rounded-3xl p-10 md:p-16 gradient-cta text-white animate-fade-in-up">
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl p-6 sm:p-10 md:p-16 gradient-cta text-white animate-fade-in-up">
               <div className="absolute inset-0 pattern-dots opacity-10" />
               
               <div className="relative z-10 text-center max-w-2xl mx-auto">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm font-medium mb-6 backdrop-blur-sm">
-                  <Users className="h-4 w-4" />
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 text-xs sm:text-sm font-medium mb-4 sm:mb-6 backdrop-blur-sm">
+                  <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   Join 10,000+ plant lovers
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-balance">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-balance">
                   Start Your Plant Journey Today
                 </h2>
-                <p className="text-white/80 text-lg mb-8 leading-relaxed">
+                <p className="text-white/80 text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
                   Join thousands of plant enthusiasts who trust PlantCare for their gardening needs.
                 </p>
-                <Button asChild size="lg" variant="secondary" className="h-12 px-8 text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto h-11 sm:h-12 px-6 sm:px-8 text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                   <Link to="/auth?mode=signup">
                     Create Free Account
                     <ArrowRight className="ml-2 h-5 w-5" />
