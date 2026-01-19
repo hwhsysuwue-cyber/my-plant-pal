@@ -202,19 +202,19 @@ export default function Reminders() {
                       style={{ animationDelay: `${index * 75}ms`, animationFillMode: 'forwards' }}
                     >
                       <CardContent className="py-4">
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-secondary flex items-center justify-center transition-colors hover:bg-primary/10">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="h-10 w-10 flex-shrink-0 rounded-xl bg-secondary flex items-center justify-center transition-colors hover:bg-primary/10">
                               {getReminderIcon((reminder.reminder_templates as any)?.reminder_type || '')}
                             </div>
-                            <div>
-                              <p className="font-medium">{(reminder.plants as any)?.name}</p>
-                              <p className="text-sm text-muted-foreground">
+                            <div className="min-w-0">
+                              <p className="font-medium truncate">{(reminder.plants as any)?.name}</p>
+                              <p className="text-sm text-muted-foreground truncate">
                                 {(reminder.reminder_templates as any)?.name || 'Custom reminder'}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-between sm:justify-end gap-3 pl-13 sm:pl-0">
                             {getDateBadge(reminder.next_reminder_date)}
                             <Button
                               size="sm"

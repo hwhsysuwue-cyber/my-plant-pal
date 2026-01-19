@@ -126,19 +126,19 @@ export default function AdminFeedback() {
 
   return (
     <Layout>
-      <div className="container py-8">
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8 flex flex-col gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full gradient-forest flex items-center justify-center">
-              <MessageSquare className="h-6 w-6 text-primary-foreground" />
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full gradient-forest flex items-center justify-center flex-shrink-0">
+              <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
             </div>
-            <div>
-              <h1 className="font-display text-3xl font-semibold">Feedback Management</h1>
-              <p className="text-muted-foreground">Review and respond to user feedback</p>
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl sm:text-3xl font-semibold">Feedback Management</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">Review and respond to user feedback</p>
             </div>
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>

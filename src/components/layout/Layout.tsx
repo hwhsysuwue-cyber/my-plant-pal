@@ -13,8 +13,8 @@ export function Layout({ children }: LayoutProps) {
       <Header />
       <main className="flex-1 page-transition">{children}</main>
       <footer className="border-t border-border bg-secondary/30">
-        <div className="container py-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="container px-4 sm:px-6 py-8 sm:py-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 group">
               <div className="h-9 w-9 rounded-xl gradient-primary flex items-center justify-center">
@@ -24,7 +24,7 @@ export function Layout({ children }: LayoutProps) {
             </Link>
 
             {/* Links */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm">
               <Link to="/search" className="text-muted-foreground hover:text-foreground transition-colors">
                 Browse Plants
               </Link>
@@ -35,7 +35,7 @@ export function Layout({ children }: LayoutProps) {
 
             {/* Copyright */}
             <div className="text-center md:text-right">
-              <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+              <p className="text-sm text-muted-foreground flex items-center justify-center md:justify-end gap-1.5">
                 Made with <Heart className="h-3.5 w-3.5 text-destructive fill-destructive" /> for plant lovers
               </p>
               <p className="text-xs text-muted-foreground mt-1">

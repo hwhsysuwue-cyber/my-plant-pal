@@ -152,15 +152,15 @@ export default function AdminUsers() {
 
   return (
     <Layout>
-      <div className="container py-8">
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full gradient-forest flex items-center justify-center">
-              <Users className="h-6 w-6 text-primary-foreground" />
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full gradient-forest flex items-center justify-center flex-shrink-0">
+              <Users className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
             </div>
-            <div>
-              <h1 className="font-display text-3xl font-semibold">User Management</h1>
-              <p className="text-muted-foreground">View and manage user roles</p>
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl sm:text-3xl font-semibold truncate">User Management</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">View and manage user roles</p>
             </div>
           </div>
         </div>
@@ -236,50 +236,91 @@ export default function AdminUsers() {
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Current Role</TableHead>
-                  <TableHead>Joined</TableHead>
-                  <TableHead className="text-right">Change Role</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user) => (
-                  <TableRow key={user.user_id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{user.full_name || 'No name'}</p>
-                        <p className="text-sm text-muted-foreground">{user.email}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{getRoleBadge(user.role)}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {user.created_at ? format(new Date(user.created_at), 'MMM d, yyyy') : 'Unknown'}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Select
-                        value={user.role}
-                        onValueChange={(value: AppRole) => 
-                          handleRoleChange(user.user_id, user.role, value, user.email || '')
-                        }
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="user">User</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
+          <>
+            {/* Desktop Table */}
+            <Card className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead>Current Role</TableHead>
+                    <TableHead>Joined</TableHead>
+                    <TableHead className="text-right">Change Role</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
+                </TableHeader>
+                <TableBody>
+                  {filteredUsers.map((user) => (
+                    <TableRow key={user.user_id}>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">{user.full_name || 'No name'}</p>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>{getRoleBadge(user.role)}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {user.created_at ? format(new Date(user.created_at), 'MMM d, yyyy') : 'Unknown'}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Select
+                          value={user.role}
+                          onValueChange={(value: AppRole) => 
+                            handleRoleChange(user.user_id, user.role, value, user.email || '')
+                          }
+                        >
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="user">User</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden space-y-3">
+              {filteredUsers.map((user) => (
+                <Card key={user.user_id}>
+                  <CardContent className="py-4">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="font-medium truncate">{user.full_name || 'No name'}</p>
+                          <p className="text-sm text-muted-foreground truncate">{user.email}</p>
+                        </div>
+                        {getRoleBadge(user.role)}
+                      </div>
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs text-muted-foreground">
+                          Joined {user.created_at ? format(new Date(user.created_at), 'MMM d, yyyy') : 'Unknown'}
+                        </p>
+                        <Select
+                          value={user.role}
+                          onValueChange={(value: AppRole) => 
+                            handleRoleChange(user.user_id, user.role, value, user.email || '')
+                          }
+                        >
+                          <SelectTrigger className="w-28">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="user">User</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </>
         )}
 
         {/* Role Change Confirmation */}

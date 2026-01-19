@@ -118,10 +118,10 @@ export default function PlantDetails() {
 
           {/* Plant Info */}
           <div className="animate-fade-in-right">
-            <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
               <div>
-                <h1 className="font-display text-3xl font-semibold mb-2">{plant.name}</h1>
-                <div className="flex gap-2">
+                <h1 className="font-display text-2xl sm:text-3xl font-semibold mb-2">{plant.name}</h1>
+                <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary" className="animate-scale-in">{plant.category}</Badge>
                   <Badge variant="outline" className="animate-scale-in stagger-1">{plant.type}</Badge>
                 </div>
@@ -131,7 +131,7 @@ export default function PlantDetails() {
                   onClick={() => addToGardenMutation.mutate()}
                   disabled={isInGarden || addToGardenMutation.isPending}
                   variant={isInGarden ? 'secondary' : 'default'}
-                  className="press-effect shadow-glow hover:shadow-glow-lg transition-all animate-fade-in stagger-2"
+                  className="w-full sm:w-auto press-effect shadow-glow hover:shadow-glow-lg transition-all animate-fade-in stagger-2"
                 >
                   {isInGarden ? (
                     <>
