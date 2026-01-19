@@ -2,17 +2,22 @@ import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { Layout } from '@/components/layout/Layout';
 import { PlantCard } from '@/components/plants/PlantCard';
 import { PlantGridSkeleton } from '@/components/skeletons/PlantCardSkeleton';
 import { PullToRefresh } from '@/components/ui/pull-to-refresh';
+import { SwipeableCard } from '@/components/ui/swipeable-card';
 import { Leaf, Plus, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export default function MyGarden() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
+  
+  // Enable keyboard navigation (Alt + Arrow keys)
+  useKeyboardNavigation({ isAdmin });
 
   const { data: gardenPlants, isLoading, refetch } = useQuery({
     queryKey: ['my-garden', user?.id],
@@ -111,9 +116,12 @@ export default function MyGarden() {
                   const plant = item.plants;
                   if (!plant) return null;
                   return (
-                    <div 
-                      key={item.id} 
-                      className={`animate-fade-in-up opacity-0`}
+                    <SwipeableCard
+                      key={item.id}
+                      onSwipeLeft={() => handleRemoveFromGarden(plant.id)}
+                      leftAction="delete"
+                      leftLabel="Remove"
+                      className="animate-fade-in-up opacity-0"
                       style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'forwards' }}
                     >
                       <PlantCard
@@ -129,7 +137,7 @@ export default function MyGarden() {
                         isInGarden={true}
                         onRemoveFromGarden={() => handleRemoveFromGarden(plant.id)}
                       />
-                    </div>
+                    </SwipeableCard>
                   );
                 })}
               </div>

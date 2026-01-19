@@ -2,19 +2,24 @@ import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ReminderListSkeleton } from '@/components/skeletons/ReminderCardSkeleton';
 import { PullToRefresh } from '@/components/ui/pull-to-refresh';
+import { SwipeableCard } from '@/components/ui/swipeable-card';
 import { Bell, Check, Droplets, Sun, Leaf, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { format, isToday, isTomorrow, isPast, addDays } from 'date-fns';
 
 export default function Reminders() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const queryClient = useQueryClient();
+
+  // Enable keyboard navigation (Alt + Arrow keys)
+  useKeyboardNavigation({ isAdmin });
 
   const { data: reminders, isLoading } = useQuery({
     queryKey: ['user-reminders', user?.id],
@@ -196,46 +201,57 @@ export default function Reminders() {
               ) : (
                 <div className="space-y-3">
                   {reminders.map((reminder, index) => (
-                    <Card 
-                      key={reminder.id} 
-                      className="hover-lift animate-fade-in-up opacity-0"
-                      style={{ animationDelay: `${index * 75}ms`, animationFillMode: 'forwards' }}
+                    <SwipeableCard
+                      key={reminder.id}
+                      onSwipeRight={() =>
+                        completeMutation.mutate({
+                          id: reminder.id,
+                          templateId: reminder.reminder_template_id,
+                          plantId: reminder.plant_id,
+                        })
+                      }
+                      rightAction="complete"
+                      rightLabel="Done"
+                      className="animate-fade-in-up opacity-0"
+                      style={{ animationDelay: `${index * 75}ms`, animationFillMode: 'forwards' } as React.CSSProperties}
                     >
-                      <CardContent className="py-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className="h-10 w-10 flex-shrink-0 rounded-xl bg-secondary flex items-center justify-center transition-colors hover:bg-primary/10">
-                              {getReminderIcon((reminder.reminder_templates as any)?.reminder_type || '')}
+                      <Card className="hover-lift border-0 shadow-none">
+                        <CardContent className="py-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="h-10 w-10 flex-shrink-0 rounded-xl bg-secondary flex items-center justify-center transition-colors hover:bg-primary/10">
+                                {getReminderIcon((reminder.reminder_templates as any)?.reminder_type || '')}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="font-medium truncate">{(reminder.plants as any)?.name}</p>
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {(reminder.reminder_templates as any)?.name || 'Custom reminder'}
+                                </p>
+                              </div>
                             </div>
-                            <div className="min-w-0">
-                              <p className="font-medium truncate">{(reminder.plants as any)?.name}</p>
-                              <p className="text-sm text-muted-foreground truncate">
-                                {(reminder.reminder_templates as any)?.name || 'Custom reminder'}
-                              </p>
+                            <div className="flex items-center justify-between sm:justify-end gap-3 pl-13 sm:pl-0">
+                              {getDateBadge(reminder.next_reminder_date)}
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="press-effect hover:bg-primary hover:text-primary-foreground transition-colors"
+                                onClick={() =>
+                                  completeMutation.mutate({
+                                    id: reminder.id,
+                                    templateId: reminder.reminder_template_id,
+                                    plantId: reminder.plant_id,
+                                  })
+                                }
+                                disabled={completeMutation.isPending}
+                              >
+                                <Check className="h-4 w-4 mr-1" />
+                                Done
+                              </Button>
                             </div>
                           </div>
-                          <div className="flex items-center justify-between sm:justify-end gap-3 pl-13 sm:pl-0">
-                            {getDateBadge(reminder.next_reminder_date)}
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="press-effect hover:bg-primary hover:text-primary-foreground transition-colors"
-                              onClick={() =>
-                                completeMutation.mutate({
-                                  id: reminder.id,
-                                  templateId: reminder.reminder_template_id,
-                                  plantId: reminder.plant_id,
-                                })
-                              }
-                              disabled={completeMutation.isPending}
-                            >
-                              <Check className="h-4 w-4 mr-1" />
-                              Done
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </SwipeableCard>
                   ))}
                 </div>
               )}

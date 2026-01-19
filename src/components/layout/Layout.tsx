@@ -1,17 +1,42 @@
 import { ReactNode } from 'react';
 import { Header } from './Header';
+import { SwipeablePageWrapper } from './SwipeablePageWrapper';
+import { PageIndicator } from './PageIndicator';
 import { Leaf, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 interface LayoutProps {
   children: ReactNode;
+  disableSwipeNav?: boolean;
 }
 
-export function Layout({ children }: LayoutProps) {
+const userRoutes = ['/', '/search', '/my-garden', '/reminders', '/feedback'];
+const adminRoutes = ['/', '/search', '/admin', '/admin/users', '/admin/reminders', '/admin/feedback'];
+
+export function Layout({ children, disableSwipeNav = false }: LayoutProps) {
+  const { isAdmin, user } = useAuth();
+  const routes = isAdmin ? adminRoutes : userRoutes;
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="flex-1 page-transition">{children}</main>
+      <main className="flex-1 page-transition">
+        {disableSwipeNav ? (
+          children
+        ) : (
+          <SwipeablePageWrapper isAdmin={isAdmin}>
+            {children}
+          </SwipeablePageWrapper>
+        )}
+      </main>
+      
+      {/* Page indicator for swipe navigation */}
+      {user && !disableSwipeNav && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-background/80 backdrop-blur-sm px-4 py-2 rounded-full border border-border shadow-soft">
+          <PageIndicator routes={routes} />
+        </div>
+      )}
       <footer className="border-t border-border bg-secondary/30">
         <div className="container px-4 sm:px-6 py-8 sm:py-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6">
