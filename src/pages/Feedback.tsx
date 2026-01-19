@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,10 +16,13 @@ import { format } from 'date-fns';
 type FeedbackType = 'feedback' | 'suggestion' | 'issue';
 
 export default function Feedback() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const [message, setMessage] = useState('');
   const [type, setType] = useState<FeedbackType>('feedback');
+
+  // Enable keyboard navigation (Alt + Arrow keys)
+  useKeyboardNavigation({ isAdmin });
 
   const { data: myFeedback, isLoading } = useQuery({
     queryKey: ['my-feedback', user?.id],

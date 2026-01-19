@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { Layout } from '@/components/layout/Layout';
 import { PlantCard } from '@/components/plants/PlantCard';
 import { PlantFilters } from '@/components/plants/PlantFilters';
@@ -16,6 +17,9 @@ export default function Search() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
+
+  // Enable keyboard navigation (Alt + Arrow keys)
+  useKeyboardNavigation({ isAdmin });
 
   // Fetch all plants
   const { data: plants, isLoading: plantsLoading } = useQuery({

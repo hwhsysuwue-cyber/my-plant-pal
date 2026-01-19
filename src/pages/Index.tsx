@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Leaf, Search, Droplets, Sun, Sprout, ArrowRight, Star, Users, Clock, Shield, Heart, Sparkles } from 'lucide-react';
 
 export default function Index() {
   const { user, isAdmin } = useAuth();
+
+  // Enable keyboard navigation (Alt + Arrow keys)
+  useKeyboardNavigation({ isAdmin });
 
   return (
     <Layout>
