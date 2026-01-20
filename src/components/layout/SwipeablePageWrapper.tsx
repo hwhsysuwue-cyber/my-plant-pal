@@ -1,5 +1,6 @@
 import { motion, PanInfo } from "framer-motion";
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -15,11 +16,18 @@ export function SwipeablePageWrapper({
   isAdmin = false,
   className,
 }: SwipeablePageWrapperProps) {
+  const location = useLocation();
   const { handleSwipeLeft, handleSwipeRight, canSwipeLeft, canSwipeRight } =
     useSwipeNavigation({ isAdmin });
 
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
   const [swipeProgress, setSwipeProgress] = useState(0);
+
+  // Reset swipe state when route changes to prevent stale gesture state
+  useEffect(() => {
+    setSwipeDirection(null);
+    setSwipeProgress(0);
+  }, [location.pathname]);
 
   const handleDrag = useCallback((_: any, info: PanInfo) => {
     const progress = Math.min(Math.abs(info.offset.x) / 150, 1);
@@ -79,8 +87,9 @@ export function SwipeablePageWrapper({
         </motion.div>
       )}
 
-      {/* Main content */}
+      {/* Main content - key forces remount on route change to reset drag state */}
       <motion.div
+        key={location.pathname}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.2}
