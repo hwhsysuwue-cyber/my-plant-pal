@@ -29,16 +29,16 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-        <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
-        <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
-        <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
-        <Route path="/plants/:id" element={<PageTransition><PlantDetails /></PageTransition>} />
+        <Route path="/" element={<PageTransition preset="clipUp"><Index /></PageTransition>} />
+        <Route path="/auth" element={<PageTransition preset="zoom"><Auth /></PageTransition>} />
+        <Route path="/reset-password" element={<PageTransition preset="fadeDown"><ResetPassword /></PageTransition>} />
+        <Route path="/search" element={<PageTransition preset="slideLeft"><Search /></PageTransition>} />
+        <Route path="/plants/:id" element={<PageTransition preset="flipY"><PlantDetails /></PageTransition>} />
         <Route
           path="/my-garden"
           element={
             <ProtectedRoute requireUser>
-              <PageTransition><MyGarden /></PageTransition>
+              <PageTransition preset="slideUp"><MyGarden /></PageTransition>
             </ProtectedRoute>
           }
         />
@@ -46,7 +46,7 @@ const AnimatedRoutes = () => {
           path="/feedback"
           element={
             <ProtectedRoute requireUser>
-              <PageTransition><Feedback /></PageTransition>
+              <PageTransition preset="rotate"><Feedback /></PageTransition>
             </ProtectedRoute>
           }
         />
@@ -54,7 +54,7 @@ const AnimatedRoutes = () => {
           path="/reminders"
           element={
             <ProtectedRoute requireUser>
-              <PageTransition><Reminders /></PageTransition>
+              <PageTransition preset="clipLeft"><Reminders /></PageTransition>
             </ProtectedRoute>
           }
         />
@@ -62,7 +62,7 @@ const AnimatedRoutes = () => {
           path="/admin"
           element={
             <ProtectedRoute requireAdmin>
-              <PageTransition><AdminDashboard /></PageTransition>
+              <PageTransition preset="slideRight"><AdminDashboard /></PageTransition>
             </ProtectedRoute>
           }
         />
@@ -70,7 +70,7 @@ const AnimatedRoutes = () => {
           path="/admin/feedback"
           element={
             <ProtectedRoute requireAdmin>
-              <PageTransition><AdminFeedback /></PageTransition>
+              <PageTransition preset="flipX"><AdminFeedback /></PageTransition>
             </ProtectedRoute>
           }
         />
@@ -78,7 +78,7 @@ const AnimatedRoutes = () => {
           path="/admin/reminders"
           element={
             <ProtectedRoute requireAdmin>
-              <PageTransition><AdminReminders /></PageTransition>
+              <PageTransition preset="fadeUp"><AdminReminders /></PageTransition>
             </ProtectedRoute>
           }
         />
@@ -86,11 +86,11 @@ const AnimatedRoutes = () => {
           path="/admin/users"
           element={
             <ProtectedRoute requireAdmin>
-              <PageTransition><AdminUsers /></PageTransition>
+              <PageTransition preset="slideDown"><AdminUsers /></PageTransition>
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+        <Route path="*" element={<PageTransition preset="fadeUp"><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
