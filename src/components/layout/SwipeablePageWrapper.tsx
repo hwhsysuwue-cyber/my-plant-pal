@@ -1,5 +1,5 @@
-import { motion, PanInfo, AnimatePresence } from "framer-motion";
-import { ReactNode, useCallback, useState, useEffect, useRef } from "react";
+import { motion, PanInfo } from "framer-motion";
+import { ReactNode, useCallback, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { cn } from "@/lib/utils";
@@ -23,15 +23,6 @@ export function SwipeablePageWrapper({
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
   const [swipeProgress, setSwipeProgress] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
-  const prevIndexRef = useRef(currentIndex);
-
-  // Determine slide direction based on navigation
-  const slideDirection = currentIndex > prevIndexRef.current ? 1 : -1;
-
-  // Update previous index after render
-  useEffect(() => {
-    prevIndexRef.current = currentIndex;
-  }, [currentIndex]);
 
   // Reset swipe state when route changes to prevent stale gesture state
   useEffect(() => {
@@ -71,35 +62,6 @@ export function SwipeablePageWrapper({
     },
     [canSwipeLeft, canSwipeRight, handleSwipeLeft, handleSwipeRight]
   );
-
-  // Page transition variants
-  const pageVariants = {
-    initial: (direction: number) => ({
-      x: direction > 0 ? "100%" : "-100%",
-      opacity: 0,
-      scale: 0.95,
-    }),
-    animate: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        x: { type: "spring" as const, stiffness: 300, damping: 30 },
-        opacity: { duration: 0.2 },
-        scale: { duration: 0.2 },
-      },
-    },
-    exit: (direction: number) => ({
-      x: direction > 0 ? "-50%" : "50%",
-      opacity: 0,
-      scale: 0.95,
-      transition: {
-        x: { type: "spring" as const, stiffness: 300, damping: 30 },
-        opacity: { duration: 0.2 },
-        scale: { duration: 0.2 },
-      },
-    }),
-  };
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
@@ -143,30 +105,23 @@ export function SwipeablePageWrapper({
         </motion.div>
       )}
 
-      {/* Main content with page transitions */}
-      <AnimatePresence mode="wait" custom={slideDirection}>
-        <motion.div
-          key={location.pathname}
-          custom={slideDirection}
-          variants={pageVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.15}
-          onDrag={handleDrag}
-          onDragEnd={handleDragEnd}
-          className="touch-pan-y"
-          style={{ 
-            touchAction: "pan-y",
-            // Add subtle tilt effect while dragging
-            rotateY: dragOffset * 0.02,
-          }}
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
+      {/* Main content (route transitions are handled by PageTransition in App.tsx) */}
+      <motion.div
+        key={location.pathname}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.15}
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
+        className="touch-pan-y"
+        style={{
+          touchAction: "pan-y",
+          // subtle tilt feedback during drag (kept independent from route animations)
+          rotateY: dragOffset * 0.02,
+        }}
+      >
+        {children}
+      </motion.div>
     </div>
   );
 }
