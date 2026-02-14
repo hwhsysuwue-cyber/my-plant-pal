@@ -2,121 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
-/* PlantCare - Premium Modern SaaS Design System
-   Clean, bold, professional aesthetics
-   All colors in HSL format
-*/
+/* PlantCare - Clean Minimal SaaS Design System */
 
 @layer base {
   :root {
-    /* Core palette - Clean and modern */
-    --background: 0 0% 100%;
-    --foreground: 220 20% 10%;
+    --background: 0 0% 99%;
+    --foreground: 240 10% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 240 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 240 10% 10%;
 
-    /* Primary - Vibrant emerald green */
-    --primary: 160 84% 39%;
+    --primary: 152 60% 42%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Subtle gray */
     --secondary: 220 14% 96%;
-    --secondary-foreground: 220 20% 20%;
+    --secondary-foreground: 220 10% 30%;
 
-    /* Muted - Soft neutral */
     --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 46%;
+    --muted-foreground: 220 8% 50%;
 
-    /* Accent - Warm amber */
-    --accent: 38 92% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    /* Destructive */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 160 84% 39%;
-
-    --radius: 0.75rem;
-
-    /* Botanical semantic colors */
-    --leaf: 160 84% 39%;
-    --leaf-light: 158 64% 95%;
-    --leaf-dark: 158 64% 25%;
-    --soil: 30 25% 32%;
-    --water: 199 89% 48%;
-    --sun: 38 92% 50%;
-    --terracotta: 16 68% 52%;
-    --terracotta-light: 20 60% 96%;
-    --cream: 40 33% 97%;
-    --sage: 145 20% 85%;
-    --mint: 165 35% 93%;
-
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 20% 10%;
-    --sidebar-primary: 160 84% 39%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 220 20% 20%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 160 84% 39%;
-  }
-
-  .dark {
-    --background: 224 25% 6%;
-    --foreground: 220 14% 96%;
-
-    --card: 224 22% 9%;
-    --card-foreground: 220 14% 96%;
-
-    --popover: 224 22% 9%;
-    --popover-foreground: 220 14% 96%;
-
-    --primary: 160 70% 45%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 224 18% 14%;
-    --secondary-foreground: 220 14% 96%;
-
-    --muted: 224 18% 14%;
-    --muted-foreground: 220 10% 56%;
-
-    --accent: 38 80% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 152 60% 96%;
+    --accent-foreground: 152 60% 30%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 224 18% 16%;
-    --input: 224 18% 16%;
-    --ring: 160 70% 45%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 152 60% 42%;
 
-    --leaf: 160 70% 45%;
-    --leaf-light: 158 40% 12%;
-    --leaf-dark: 158 50% 35%;
-    --soil: 30 20% 22%;
-    --water: 199 75% 50%;
-    --sun: 38 75% 50%;
-    --terracotta: 16 55% 48%;
-    --terracotta-light: 20 40% 12%;
-    --cream: 40 15% 10%;
-    --sage: 145 15% 22%;
-    --mint: 165 20% 14%;
+    --radius: 0.5rem;
 
-    --sidebar-background: 224 25% 6%;
-    --sidebar-foreground: 220 14% 96%;
-    --sidebar-primary: 160 70% 45%;
+    /* Botanical semantic colors */
+    --leaf: 152 60% 42%;
+    --leaf-light: 152 40% 96%;
+    --leaf-dark: 152 50% 25%;
+    --soil: 30 20% 35%;
+    --water: 205 80% 50%;
+    --sun: 40 90% 55%;
+    --terracotta: 16 55% 50%;
+    --terracotta-light: 20 40% 96%;
+    --cream: 40 20% 97%;
+    --sage: 145 15% 88%;
+    --mint: 165 25% 94%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 10%;
+    --sidebar-primary: 152 60% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 224 18% 14%;
-    --sidebar-accent-foreground: 220 14% 96%;
-    --sidebar-border: 224 18% 16%;
-    --sidebar-ring: 160 70% 45%;
+    --sidebar-accent: 152 60% 96%;
+    --sidebar-accent-foreground: 152 60% 30%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 152 60% 42%;
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 220 14% 96%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 220 14% 96%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 220 14% 96%;
+
+    --primary: 152 55% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 8% 12%;
+    --secondary-foreground: 220 14% 96%;
+
+    --muted: 240 8% 12%;
+    --muted-foreground: 220 8% 55%;
+
+    --accent: 152 30% 12%;
+    --accent-foreground: 152 55% 80%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 8% 14%;
+    --input: 240 8% 14%;
+    --ring: 152 55% 48%;
+
+    --leaf: 152 55% 48%;
+    --leaf-light: 152 30% 12%;
+    --leaf-dark: 152 40% 35%;
+    --soil: 30 15% 22%;
+    --water: 205 65% 50%;
+    --sun: 40 75% 50%;
+    --terracotta: 16 45% 48%;
+    --terracotta-light: 20 30% 12%;
+    --cream: 40 10% 8%;
+    --sage: 145 10% 18%;
+    --mint: 165 15% 12%;
+
+    --sidebar-background: 240 10% 4%;
+    --sidebar-foreground: 220 14% 96%;
+    --sidebar-primary: 152 55% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 152 30% 12%;
+    --sidebar-accent-foreground: 152 55% 80%;
+    --sidebar-border: 240 8% 14%;
+    --sidebar-ring: 152 55% 48%;
   }
 }
 
@@ -145,85 +136,72 @@
 }
 
 @layer components {
-  /* Page container */
   .page-container {
-    @apply container py-8 md:py-12 lg:py-16;
+    @apply container py-6 md:py-8;
   }
 
-  /* Section spacing */
   .section {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-16 md:py-24;
   }
 
-  /* Card styles */
   .card-elevated {
-    @apply bg-card border border-border rounded-2xl;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04);
+    @apply bg-card border border-border rounded-lg;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }
 
   .card-elevated:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
-  /* Feature card */
   .feature-card {
-    @apply relative p-6 md:p-8 rounded-2xl bg-card border border-border transition-all duration-300;
+    @apply relative p-6 rounded-lg bg-card border border-border transition-all duration-200;
   }
 
   .feature-card:hover {
-    @apply border-primary/20 -translate-y-1;
-    box-shadow: 0 8px 24px -8px rgba(16, 185, 129, 0.15);
+    @apply border-primary/30;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
-  /* Icon container */
   .icon-container {
-    @apply flex items-center justify-center rounded-xl transition-all duration-200;
+    @apply flex items-center justify-center rounded-lg transition-all duration-200;
   }
 
   .icon-container-sm {
-    @apply h-10 w-10 rounded-lg;
+    @apply h-8 w-8;
   }
 
   .icon-container-md {
-    @apply h-12 w-12 rounded-xl;
+    @apply h-10 w-10;
   }
 
   .icon-container-lg {
-    @apply h-14 w-14 rounded-xl;
+    @apply h-12 w-12;
   }
 
-  /* Stat card */
   .stat-card {
-    @apply p-6 rounded-2xl bg-card border border-border text-center transition-all duration-200;
-  }
-
-  .stat-card:hover {
-    @apply border-primary/20;
-    box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.12);
+    @apply p-4 rounded-lg bg-card border border-border text-center;
   }
 }
 
 @layer utilities {
-  /* Gradient backgrounds */
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(160, 84%, 39%) 0%, hsl(170, 75%, 35%) 100%);
+    background: linear-gradient(135deg, hsl(152, 60%, 42%) 0%, hsl(160, 55%, 38%) 100%);
   }
 
   .gradient-hero {
-    background: linear-gradient(180deg, hsl(160, 30%, 98%) 0%, hsl(0, 0%, 100%) 100%);
+    background: linear-gradient(180deg, hsl(152, 20%, 98%) 0%, hsl(0, 0%, 99%) 100%);
   }
 
   .gradient-cta {
-    background: linear-gradient(135deg, hsl(160, 84%, 39%) 0%, hsl(165, 80%, 32%) 50%, hsl(175, 70%, 28%) 100%);
+    background: linear-gradient(135deg, hsl(152, 60%, 42%) 0%, hsl(160, 55%, 35%) 100%);
   }
 
   .gradient-warm {
-    background: linear-gradient(135deg, hsl(38, 92%, 50%) 0%, hsl(28, 85%, 55%) 100%);
+    background: linear-gradient(135deg, hsl(40, 90%, 55%) 0%, hsl(30, 80%, 55%) 100%);
   }
 
-  /* Subtle patterns */
   .pattern-dots {
-    background-image: radial-gradient(hsl(var(--primary) / 0.06) 1px, transparent 1px);
+    background-image: radial-gradient(hsl(var(--primary) / 0.04) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
@@ -234,46 +212,25 @@
     background-size: 48px 48px;
   }
 
-  /* Glass effect */
   .glass {
     @apply bg-background/80 backdrop-blur-lg border-border/50;
   }
 
-  .glass-strong {
-    @apply bg-background/95 backdrop-blur-xl border-border/30;
-  }
-
-  /* Text utilities */
   .text-balance {
     text-wrap: balance;
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, hsl(160, 84%, 39%) 0%, hsl(170, 75%, 35%) 100%);
+    background: linear-gradient(135deg, hsl(152, 60%, 42%) 0%, hsl(160, 55%, 38%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Link underline animation */
-  .link-underline {
-    @apply relative inline-block;
-  }
-
-  .link-underline::after {
-    @apply content-[''] absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
-  }
-
-  .link-underline:hover::after {
-    @apply w-full;
-  }
-
-  /* Focus ring */
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
-  /* Truncate multiline */
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -288,12 +245,10 @@
     overflow: hidden;
   }
 
-  /* Page transition */
   .page-transition {
     @apply animate-fade-in;
   }
 
-  /* Stagger animations */
   .stagger-1 { animation-delay: 50ms; }
   .stagger-2 { animation-delay: 100ms; }
   .stagger-3 { animation-delay: 150ms; }
@@ -303,65 +258,23 @@
   .stagger-7 { animation-delay: 350ms; }
   .stagger-8 { animation-delay: 400ms; }
 
-  /* Hover lift effect */
   .hover-lift {
-    @apply transition-all duration-300;
+    @apply transition-all duration-200;
   }
   .hover-lift:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.12);
+    @apply -translate-y-0.5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
-  /* Hover scale effect */
-  .hover-scale {
-    @apply transition-transform duration-200;
-  }
-  .hover-scale:hover {
-    @apply scale-105;
-  }
-
-  /* Hover glow effect */
-  .hover-glow {
-    @apply transition-all duration-300;
-  }
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-  }
-
-  /* Icon hover rotate */
-  .icon-hover-rotate {
-    @apply transition-transform duration-300;
-  }
-  .group:hover .icon-hover-rotate {
-    @apply rotate-12;
-  }
-
-  /* Button press effect */
   .press-effect {
-    @apply transition-transform duration-100 active:scale-95;
-  }
-
-  /* Card hover border */
-  .card-hover-border {
-    @apply transition-all duration-300 border-transparent;
-  }
-  .card-hover-border:hover {
-    @apply border-primary/30;
-  }
-
-  /* Animate on scroll trigger class (to be used with JS) */
-  .animate-on-scroll {
-    @apply opacity-0 translate-y-4;
-  }
-  .animate-on-scroll.visible {
-    @apply opacity-100 translate-y-0 transition-all duration-500;
+    @apply transition-transform duration-100 active:scale-[0.98];
   }
 }
 
-/* Custom scrollbar */
+/* Scrollbar */
 .scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
@@ -370,9 +283,5 @@
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
-  border-radius: 3px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 2px;
 }

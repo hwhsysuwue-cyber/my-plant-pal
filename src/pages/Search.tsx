@@ -8,7 +8,7 @@ import { PlantCard } from '@/components/plants/PlantCard';
 import { PlantFilters } from '@/components/plants/PlantFilters';
 import { PlantGridSkeleton } from '@/components/skeletons/PlantCardSkeleton';
 import { PullToRefresh } from '@/components/ui/pull-to-refresh';
-import { Search as SearchIcon, Leaf, Sparkles } from 'lucide-react';
+import { Search as SearchIcon, Leaf } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Search() {
@@ -18,10 +18,8 @@ export default function Search() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
 
-  // Enable keyboard navigation (Alt + Arrow keys)
   useKeyboardNavigation({ isAdmin });
 
-  // Fetch all plants
   const { data: plants, isLoading: plantsLoading } = useQuery({
     queryKey: ['plants'],
     queryFn: async () => {
@@ -35,7 +33,6 @@ export default function Search() {
     enabled: !!user,
   });
 
-  // Fetch user's garden
   const { data: userGarden, refetch: refetchGarden } = useQuery({
     queryKey: ['user-garden', user?.id],
     queryFn: async () => {
@@ -50,7 +47,6 @@ export default function Search() {
     enabled: !!user && !isAdmin,
   });
 
-  // Get unique categories and types
   const categories = useMemo(() => {
     if (!plants) return [];
     return [...new Set(plants.map((p) => p.category))].sort();
@@ -61,7 +57,6 @@ export default function Search() {
     return [...new Set(plants.map((p) => p.type))].sort();
   }, [plants]);
 
-  // Filter plants
   const filteredPlants = useMemo(() => {
     if (!plants) return [];
     return plants.filter((plant) => {
@@ -73,22 +68,11 @@ export default function Search() {
   }, [plants, searchTerm, selectedCategory, selectedType]);
 
   const handleAddToGarden = async (plantId: string) => {
-    if (!user) {
-      toast.error('Please sign in to add plants to your garden');
-      return;
-    }
-
-    const { error } = await supabase.from('user_gardens').insert({
-      user_id: user.id,
-      plant_id: plantId,
-    });
-
+    if (!user) { toast.error('Please sign in to add plants'); return; }
+    const { error } = await supabase.from('user_gardens').insert({ user_id: user.id, plant_id: plantId });
     if (error) {
-      if (error.code === '23505') {
-        toast.info('This plant is already in your garden');
-      } else {
-        toast.error('Failed to add plant to garden');
-      }
+      if (error.code === '23505') toast.info('Already in your garden');
+      else toast.error('Failed to add plant');
     } else {
       toast.success('Plant added to your garden!');
       refetchGarden();
@@ -97,44 +81,28 @@ export default function Search() {
 
   const handleRemoveFromGarden = async (plantId: string) => {
     if (!user) return;
-
-    const { error } = await supabase
-      .from('user_gardens')
-      .delete()
-      .eq('user_id', user.id)
-      .eq('plant_id', plantId);
-
-    if (error) {
-      toast.error('Failed to remove plant from garden');
-    } else {
-      toast.success('Plant removed from garden');
-      refetchGarden();
-    }
+    const { error } = await supabase.from('user_gardens').delete().eq('user_id', user.id).eq('plant_id', plantId);
+    if (error) toast.error('Failed to remove plant');
+    else { toast.success('Plant removed'); refetchGarden(); }
   };
 
-  const clearFilters = () => {
-    setSearchTerm('');
-    setSelectedCategory('all');
-    setSelectedType('all');
-  };
+  const clearFilters = () => { setSearchTerm(''); setSelectedCategory('all'); setSelectedType('all'); };
 
   const handleRefresh = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['plants'] });
     await refetchGarden();
-    toast.success('Plants refreshed!');
+    toast.success('Refreshed!');
   }, [queryClient, refetchGarden]);
 
   if (!user) {
     return (
       <Layout>
-        <div className="container px-4 sm:px-6 py-20 md:py-28 text-center">
-          <div className="max-w-md mx-auto animate-fade-in-up">
-            <div className="h-24 w-24 rounded-3xl bg-secondary flex items-center justify-center mx-auto mb-8 shadow-soft">
-              <SearchIcon className="h-12 w-12 text-muted-foreground" />
-            </div>
-            <h1 className="font-display text-3xl md:text-4xl font-semibold mb-4">Search Plants</h1>
-            <p className="text-muted-foreground text-lg">Please sign in to search our plant catalog</p>
+        <div className="container px-4 py-20 text-center">
+          <div className="h-16 w-16 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-6">
+            <SearchIcon className="h-8 w-8 text-muted-foreground" />
           </div>
+          <h1 className="text-2xl font-bold mb-2">Search Plants</h1>
+          <p className="text-muted-foreground">Please sign in to search our plant catalog</p>
         </div>
       </Layout>
     );
@@ -143,59 +111,46 @@ export default function Search() {
   return (
     <Layout>
       <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
-        <div className="container px-4 sm:px-6 py-10 md:py-14">
-        {/* Page Header */}
-        <div className="mb-10 animate-fade-in">
-          <div className="flex items-center gap-2 text-primary text-sm font-medium mb-3">
-            <Sparkles className="h-4 w-4" />
-            <span>Discover Plants</span>
+        <div className="container px-4 sm:px-6 py-6 md:py-8">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold mb-1">Search Plants</h1>
+            <p className="text-sm text-muted-foreground">Discover the perfect plants for your space</p>
           </div>
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold mb-3">Search Plants</h1>
-          <p className="text-muted-foreground text-lg md:text-xl">
-            Discover the perfect plants for your space
-          </p>
-        </div>
 
-        {/* Filters */}
-        <PlantFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          selectedType={selectedType}
-          onTypeChange={setSelectedType}
-          categories={categories}
-          types={types}
-          onClear={clearFilters}
-        />
+          <PlantFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            selectedType={selectedType}
+            onTypeChange={setSelectedType}
+            categories={categories}
+            types={types}
+            onClear={clearFilters}
+          />
 
-        {/* Results */}
-        {plantsLoading ? (
-          <div className="mt-8">
-            <PlantGridSkeleton count={8} />
-          </div>
-        ) : filteredPlants.length === 0 ? (
-          <div className="text-center py-24 animate-fade-in-up">
-            <div className="h-24 w-24 rounded-3xl bg-secondary flex items-center justify-center mx-auto mb-8 shadow-soft">
-              <Leaf className="h-12 w-12 text-muted-foreground" />
+          {plantsLoading ? (
+            <div className="mt-6"><PlantGridSkeleton count={8} /></div>
+          ) : filteredPlants.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="h-14 w-14 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-4">
+                <Leaf className="h-7 w-7 text-muted-foreground" />
+              </div>
+              <h2 className="text-lg font-semibold mb-1">No plants found</h2>
+              <p className="text-sm text-muted-foreground">Try adjusting your search or filters</p>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-semibold mb-3">No plants found</h2>
-            <p className="text-muted-foreground text-lg">
-              Try adjusting your search or filters
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="flex items-center justify-between mt-8 mb-6 animate-fade-in">
-              <p className="text-muted-foreground">
-                <span className="font-semibold text-foreground">{filteredPlants.length}</span>{' '}
-                plant{filteredPlants.length !== 1 ? 's' : ''} found
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredPlants.map((plant, index) => (
-                <div key={plant.id} className={`stagger-${Math.min(index % 8 + 1, 8)}`}>
+          ) : (
+            <>
+              <div className="flex items-center mt-6 mb-4">
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">{filteredPlants.length}</span>{' '}
+                  plant{filteredPlants.length !== 1 ? 's' : ''} found
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredPlants.map((plant) => (
                   <PlantCard
+                    key={plant.id}
                     id={plant.id}
                     name={plant.name}
                     category={plant.category}
@@ -210,11 +165,10 @@ export default function Search() {
                     onAddToGarden={() => handleAddToGarden(plant.id)}
                     onRemoveFromGarden={() => handleRemoveFromGarden(plant.id)}
                   />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </PullToRefresh>
     </Layout>
