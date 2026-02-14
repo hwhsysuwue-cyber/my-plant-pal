@@ -125,7 +125,7 @@ export default function Auth() {
   // Forgot password success state
   if (mode === 'forgot' && resetEmailSent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary/50 via-background to-mint/30 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <div className="w-full max-w-md animate-fade-in-up">
           <button 
             onClick={() => setMode('signin')}
@@ -135,8 +135,8 @@ export default function Auth() {
             Back to sign in
           </button>
 
-          <Card className="shadow-strong border-border/50 rounded-2xl overflow-hidden">
-            <div className="h-1 gradient-primary" />
+           <Card className="border rounded-lg overflow-hidden">
+             <div className="h-0.5 gradient-primary" />
             
             <CardHeader className="text-center pt-8 pb-4">
               <div className="flex justify-center mb-5">
@@ -183,7 +183,7 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary/50 via-background to-mint/30 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md animate-fade-in-up">
         {mode === 'forgot' ? (
           <button 
@@ -200,13 +200,12 @@ export default function Auth() {
           </Link>
         )}
 
-        <Card className="shadow-strong border-border/50 rounded-2xl overflow-hidden">
-          {/* Top accent line */}
-          <div className="h-1 gradient-primary" />
+        <Card className="border rounded-lg overflow-hidden">
+          <div className="h-0.5 gradient-primary" />
           
           <CardHeader className="text-center pt-8 pb-4">
             <div className="flex justify-center mb-5">
-              <div className="h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-glow">
+              <div className="h-12 w-12 rounded-lg gradient-primary flex items-center justify-center">
                 {mode === 'forgot' ? (
                   <Mail className="h-7 w-7 text-white" />
                 ) : (
