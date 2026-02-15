@@ -43,18 +43,18 @@ export default function Feedback() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-      case 'reviewed': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-      case 'resolved': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+      case 'new': return 'bg-water/15 text-water border-water/20';
+      case 'reviewed': return 'bg-sun/15 text-sun border-sun/20';
+      case 'resolved': return 'bg-leaf/15 text-leaf border-leaf/20';
       default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getTypeColor = (t: string) => {
     switch (t) {
-      case 'feedback': return 'bg-primary/10 text-primary';
+      case 'feedback': return 'bg-primary/10 text-primary border-primary/20';
       case 'suggestion': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
-      case 'issue': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+      case 'issue': return 'bg-destructive/10 text-destructive border-destructive/20';
       default: return 'bg-muted text-muted-foreground';
     }
   };
@@ -62,9 +62,9 @@ export default function Feedback() {
   if (!user) {
     return (
       <Layout>
-        <div className="container py-16 text-center">
-          <div className="h-14 w-14 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-4">
-            <MessageSquare className="h-7 w-7 text-muted-foreground" />
+        <div className="container py-20 text-center">
+          <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+            <MessageSquare className="h-8 w-8 text-muted-foreground" />
           </div>
           <h1 className="text-2xl font-bold mb-2">Feedback</h1>
           <p className="text-muted-foreground">Sign in to submit feedback</p>
@@ -76,19 +76,20 @@ export default function Feedback() {
   return (
     <Layout>
       <div className="container px-4 sm:px-6 py-6 md:py-8 max-w-3xl">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-1">Feedback</h1>
-          <p className="text-sm text-muted-foreground">Share your thoughts, suggestions, or report issues</p>
+        <div className="page-header">
+          <h1 className="page-title">Feedback</h1>
+          <p className="page-subtitle">Share your thoughts, suggestions, or report issues</p>
         </div>
 
-        <Card className="mb-6">
-          <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-base">New Feedback</CardTitle>
+        <Card className="mb-8 rounded-xl shadow-soft overflow-hidden">
+          <div className="h-0.5 gradient-primary" />
+          <CardHeader className="p-5 pb-3">
+            <CardTitle className="text-base font-semibold">New Feedback</CardTitle>
             <CardDescription className="text-xs">We value your input</CardDescription>
           </CardHeader>
-          <CardContent className="p-4 pt-2 space-y-3">
+          <CardContent className="p-5 pt-0 space-y-4">
             <Select value={type} onValueChange={(v) => setType(v as FeedbackType)}>
-              <SelectTrigger className="w-full sm:w-36 h-9 text-sm">
+              <SelectTrigger className="w-full sm:w-40 h-10 rounded-lg text-sm">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
@@ -103,12 +104,13 @@ export default function Feedback() {
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               maxLength={1000}
-              className="resize-none text-sm"
+              className="resize-none text-sm rounded-lg"
             />
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">{message.length}/1000</span>
               <Button
                 size="sm"
+                className="rounded-lg shadow-glow hover:shadow-glow-lg transition-all"
                 onClick={() => submitMutation.mutate()}
                 disabled={!message.trim() || submitMutation.isPending}
               >
@@ -120,28 +122,28 @@ export default function Feedback() {
         </Card>
 
         <div>
-          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Your Submissions</h2>
+          <p className="section-label">Your Submissions</p>
           {isLoading ? (
-            <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>
+            <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>
           ) : !myFeedback || myFeedback.length === 0 ? (
-            <Card><CardContent className="py-8 text-center"><p className="text-sm text-muted-foreground">No feedback yet</p></CardContent></Card>
+            <Card className="rounded-xl shadow-soft"><CardContent className="py-10 text-center"><p className="text-sm text-muted-foreground">No feedback yet</p></CardContent></Card>
           ) : (
             <div className="space-y-3">
               {myFeedback.map((item) => (
-                <Card key={item.id}>
-                  <CardContent className="p-4">
-                    <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                      <Badge className={getTypeColor(item.type)} variant="secondary">{item.type}</Badge>
-                      <Badge className={getStatusColor(item.status)} variant="secondary">{item.status}</Badge>
-                      {item.admin_reply && <Badge variant="outline" className="text-primary border-primary text-xs">Replied</Badge>}
+                <Card key={item.id} className="rounded-xl shadow-soft hover:shadow-medium transition-all duration-300">
+                  <CardContent className="p-5">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                      <Badge className={`${getTypeColor(item.type)} rounded-md`} variant="secondary">{item.type}</Badge>
+                      <Badge className={`${getStatusColor(item.status)} rounded-md`} variant="secondary">{item.status}</Badge>
+                      {item.admin_reply && <Badge variant="outline" className="text-primary border-primary/30 rounded-md text-xs">Replied</Badge>}
                     </div>
-                    <p className="text-sm mb-1.5">{item.message}</p>
+                    <p className="text-sm mb-2 leading-relaxed">{item.message}</p>
                     <p className="text-xs text-muted-foreground">{format(new Date(item.created_at), 'PPp')}</p>
                     {item.admin_reply && (
-                      <div className="mt-3 p-3 bg-accent rounded-md">
-                        <p className="text-xs font-medium text-primary mb-1">Admin Response:</p>
-                        <p className="text-sm">{item.admin_reply}</p>
-                        {item.replied_at && <p className="text-xs text-muted-foreground mt-1">{format(new Date(item.replied_at), 'PPp')}</p>}
+                      <div className="mt-4 p-4 bg-accent/50 rounded-xl border border-accent">
+                        <p className="text-xs font-semibold text-primary mb-1">Admin Response:</p>
+                        <p className="text-sm leading-relaxed">{item.admin_reply}</p>
+                        {item.replied_at && <p className="text-xs text-muted-foreground mt-2">{format(new Date(item.replied_at), 'PPp')}</p>}
                       </div>
                     )}
                   </CardContent>

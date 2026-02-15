@@ -48,12 +48,12 @@ export default function MyGarden() {
     <Layout>
       <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
         <div className="container px-4 sm:px-6 py-6 md:py-8">
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="page-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold mb-1">My Garden</h1>
-              <p className="text-sm text-muted-foreground">Your personal plant collection</p>
+              <h1 className="page-title">My Garden</h1>
+              <p className="page-subtitle">Your personal plant collection</p>
             </div>
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="rounded-xl shadow-glow hover:shadow-glow-lg transition-all">
               <Link to="/search"><Plus className="mr-1.5 h-4 w-4" /> Add Plants</Link>
             </Button>
           </div>
@@ -61,25 +61,25 @@ export default function MyGarden() {
           {isLoading ? (
             <PlantGridSkeleton count={4} />
           ) : !gardenPlants || gardenPlants.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="h-14 w-14 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-4">
-                <Leaf className="h-7 w-7 text-muted-foreground" />
+            <div className="text-center py-20">
+              <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+                <Leaf className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h2 className="text-lg font-semibold mb-1">Your garden is empty</h2>
+              <h2 className="text-lg font-bold mb-1">Your garden is empty</h2>
               <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
                 Start building your collection by exploring our catalog.
               </p>
-              <Button asChild size="sm">
+              <Button asChild size="sm" className="rounded-xl shadow-glow hover:shadow-glow-lg transition-all">
                 <Link to="/search"><Plus className="mr-1.5 h-4 w-4" /> Explore Plants</Link>
               </Button>
             </div>
           ) : (
             <>
-              <p className="text-sm text-muted-foreground mb-4">
-                <span className="font-medium text-foreground">{gardenPlants.length}</span>{' '}
+              <p className="text-sm text-muted-foreground mb-5">
+                <span className="font-semibold text-foreground">{gardenPlants.length}</span>{' '}
                 plant{gardenPlants.length !== 1 ? 's' : ''}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {gardenPlants.map((item) => {
                   const plant = item.plants;
                   if (!plant) return null;

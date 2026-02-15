@@ -97,8 +97,8 @@ export default function Search() {
   if (!user) {
     return (
       <Layout>
-        <div className="container px-4 py-20 text-center">
-          <div className="h-16 w-16 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-6">
+        <div className="container px-4 py-24 text-center">
+          <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-6">
             <SearchIcon className="h-8 w-8 text-muted-foreground" />
           </div>
           <h1 className="text-2xl font-bold mb-2">Search Plants</h1>
@@ -112,9 +112,9 @@ export default function Search() {
     <Layout>
       <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
         <div className="container px-4 sm:px-6 py-6 md:py-8">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold mb-1">Search Plants</h1>
-            <p className="text-sm text-muted-foreground">Discover the perfect plants for your space</p>
+          <div className="page-header">
+            <h1 className="page-title">Search Plants</h1>
+            <p className="page-subtitle">Discover the perfect plants for your space</p>
           </div>
 
           <PlantFilters
@@ -132,22 +132,22 @@ export default function Search() {
           {plantsLoading ? (
             <div className="mt-6"><PlantGridSkeleton count={8} /></div>
           ) : filteredPlants.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="h-14 w-14 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-4">
-                <Leaf className="h-7 w-7 text-muted-foreground" />
+            <div className="text-center py-20">
+              <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+                <Leaf className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h2 className="text-lg font-semibold mb-1">No plants found</h2>
+              <h2 className="text-lg font-bold mb-1">No plants found</h2>
               <p className="text-sm text-muted-foreground">Try adjusting your search or filters</p>
             </div>
           ) : (
             <>
               <div className="flex items-center mt-6 mb-4">
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">{filteredPlants.length}</span>{' '}
+                  <span className="font-semibold text-foreground">{filteredPlants.length}</span>{' '}
                   plant{filteredPlants.length !== 1 ? 's' : ''} found
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filteredPlants.map((plant) => (
                   <PlantCard
                     key={plant.id}

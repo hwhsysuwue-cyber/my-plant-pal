@@ -91,10 +91,10 @@ export default function Reminders() {
 
   const getDateBadge = (dateStr: string) => {
     const date = new Date(dateStr);
-    if (isPast(date) && !isToday(date)) return <Badge variant="destructive">Overdue</Badge>;
-    if (isToday(date)) return <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">Today</Badge>;
-    if (isTomorrow(date)) return <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">Tomorrow</Badge>;
-    return <Badge variant="secondary">{format(date, 'MMM d')}</Badge>;
+    if (isPast(date) && !isToday(date)) return <Badge variant="destructive" className="rounded-lg">Overdue</Badge>;
+    if (isToday(date)) return <Badge className="bg-sun/15 text-sun border-sun/20 rounded-lg">Today</Badge>;
+    if (isTomorrow(date)) return <Badge className="bg-water/15 text-water border-water/20 rounded-lg">Tomorrow</Badge>;
+    return <Badge variant="secondary" className="rounded-lg">{format(date, 'MMM d')}</Badge>;
   };
 
   const getReminderIcon = (type: string) => {
@@ -112,9 +112,9 @@ export default function Reminders() {
   if (!user) {
     return (
       <Layout>
-        <div className="container py-16 text-center">
-          <div className="h-14 w-14 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-4">
-            <Bell className="h-7 w-7 text-muted-foreground" />
+        <div className="container py-20 text-center">
+          <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+            <Bell className="h-8 w-8 text-muted-foreground" />
           </div>
           <h1 className="text-2xl font-bold mb-2">Reminders</h1>
           <p className="text-muted-foreground">Sign in to view your reminders</p>
@@ -127,26 +127,28 @@ export default function Reminders() {
     <Layout>
       <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
         <div className="container px-4 sm:px-6 py-6 md:py-8 max-w-3xl">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold mb-1">Reminders</h1>
-            <p className="text-sm text-muted-foreground">Stay on top of your plant care schedule</p>
+          <div className="page-header">
+            <h1 className="page-title">Reminders</h1>
+            <p className="page-subtitle">Stay on top of your plant care schedule</p>
           </div>
 
           {isLoading ? (
             <ReminderListSkeleton count={3} />
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Upcoming</h2>
+                <p className="section-label">Upcoming</p>
                 {!reminders || reminders.length === 0 ? (
-                  <Card>
-                    <CardContent className="py-8 text-center">
-                      <Bell className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+                  <Card className="rounded-xl shadow-soft">
+                    <CardContent className="py-10 text-center">
+                      <div className="h-12 w-12 rounded-xl bg-muted flex items-center justify-center mx-auto mb-3">
+                        <Bell className="h-6 w-6 text-muted-foreground" />
+                      </div>
                       <p className="text-sm text-muted-foreground">No active reminders</p>
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {reminders.map((reminder) => (
                       <SwipeableCard
                         key={reminder.id}
@@ -154,15 +156,15 @@ export default function Reminders() {
                         rightAction="complete"
                         rightLabel="Done"
                       >
-                        <Card className="border shadow-none">
-                          <CardContent className="py-3 px-4">
+                        <Card className="rounded-xl shadow-soft border hover:border-primary/20 hover:shadow-medium transition-all duration-300">
+                          <CardContent className="py-3.5 px-4">
                             <div className="flex items-center justify-between gap-3">
                               <div className="flex items-center gap-3 min-w-0">
-                                <div className="h-9 w-9 rounded-md bg-secondary flex items-center justify-center flex-shrink-0">
+                                <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0">
                                   {getReminderIcon((reminder.reminder_templates as any)?.reminder_type || '')}
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="text-sm font-medium truncate">{(reminder.plants as any)?.name}</p>
+                                  <p className="text-sm font-semibold truncate">{(reminder.plants as any)?.name}</p>
                                   <p className="text-xs text-muted-foreground truncate">
                                     {(reminder.reminder_templates as any)?.name || 'Custom'}
                                   </p>
@@ -173,7 +175,7 @@ export default function Reminders() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 text-xs"
+                                  className="h-8 text-xs rounded-lg"
                                   onClick={() => completeMutation.mutate({ id: reminder.id, templateId: reminder.reminder_template_id, plantId: reminder.plant_id })}
                                   disabled={completeMutation.isPending}
                                 >
@@ -191,16 +193,16 @@ export default function Reminders() {
 
               {userGarden && userGarden.length > 0 && templates && templates.length > 0 && (
                 <div>
-                  <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Set Up Reminders</h2>
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <p className="section-label">Set Up Reminders</p>
+                  <div className="grid gap-4 sm:grid-cols-2">
                     {templates.map((template) => (
-                      <Card key={template.id}>
+                      <Card key={template.id} className="rounded-xl shadow-soft hover:shadow-medium transition-all duration-300">
                         <CardHeader className="pb-2 p-4">
-                          <div className="flex items-center gap-2">
-                            <div className="h-7 w-7 rounded-md bg-secondary flex items-center justify-center">
+                          <div className="flex items-center gap-2.5">
+                            <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center">
                               {getReminderIcon(template.reminder_type)}
                             </div>
-                            <CardTitle className="text-sm">{template.name}</CardTitle>
+                            <CardTitle className="text-sm font-semibold">{template.name}</CardTitle>
                           </div>
                           <CardDescription className="text-xs">
                             Every {template.frequency_days} day{template.frequency_days !== 1 ? 's' : ''}
@@ -218,7 +220,7 @@ export default function Reminders() {
                                   size="sm"
                                   variant={hasReminder ? 'secondary' : 'outline'}
                                   disabled={hasReminder || createReminderMutation.isPending}
-                                  className="h-7 text-xs"
+                                  className="h-7 text-xs rounded-lg"
                                   onClick={() => createReminderMutation.mutate({ templateId: template.id, plantId: garden.plant_id })}
                                 >
                                   {(garden.plants as any)?.name}
@@ -235,9 +237,11 @@ export default function Reminders() {
               )}
 
               {(!userGarden || userGarden.length === 0) && (
-                <Card>
-                  <CardContent className="py-8 text-center">
-                    <Leaf className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+                <Card className="rounded-xl shadow-soft">
+                  <CardContent className="py-10 text-center">
+                    <div className="h-12 w-12 rounded-xl bg-muted flex items-center justify-center mx-auto mb-3">
+                      <Leaf className="h-6 w-6 text-muted-foreground" />
+                    </div>
                     <p className="text-sm text-muted-foreground">Add plants to your garden first</p>
                   </CardContent>
                 </Card>
