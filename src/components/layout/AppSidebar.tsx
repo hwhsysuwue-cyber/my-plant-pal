@@ -57,21 +57,21 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
-            <Leaf className="h-4 w-4 text-white" />
+          <div className="h-9 w-9 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow">
+            <Leaf className="h-4.5 w-4.5 text-white" />
           </div>
           {!collapsed && (
-            <span className="text-base font-semibold text-sidebar-foreground">PlantCare</span>
+            <span className="text-base font-bold text-sidebar-foreground tracking-tight">PlantCare</span>
           )}
         </div>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground/60 font-semibold px-3">
             {isAdmin ? 'Admin' : 'Menu'}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -82,8 +82,8 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end={item.url === '/' || item.url === '/admin'}
-                      className="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors"
-                      activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-all duration-200"
+                      activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm"
                     >
                       <item.icon className="h-4 w-4 flex-shrink-0" />
                       {!collapsed && <span>{item.title}</span>}
@@ -97,19 +97,19 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-3">
-        <Separator className="mb-3" />
+        <Separator className="mb-3 opacity-50" />
         {user && (
           <div className="space-y-2">
             {!collapsed && (
-              <div className="px-2.5 py-1.5">
-                <p className="text-xs font-medium truncate">{user.email}</p>
-                <p className="text-[11px] text-muted-foreground capitalize">{isAdmin ? 'Admin' : 'Member'}</p>
+              <div className="px-3 py-2 rounded-lg bg-muted/50">
+                <p className="text-xs font-semibold truncate">{user.email}</p>
+                <p className="text-[10px] text-muted-foreground capitalize font-medium">{isAdmin ? 'Admin' : 'Member'}</p>
               </div>
             )}
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start gap-2.5 text-muted-foreground hover:text-destructive"
+              className="w-full justify-start gap-2.5 text-muted-foreground hover:text-destructive rounded-xl"
               onClick={handleSignOut}
             >
               <LogOut className="h-4 w-4 flex-shrink-0" />
