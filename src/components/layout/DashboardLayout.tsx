@@ -20,10 +20,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             {user && <SidebarTrigger />}
             {!user && (
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-xl gradient-primary flex items-center justify-center shadow-glow">
-                  <Leaf className="h-4 w-4 text-white" />
+                <div className="h-9 w-9 rounded-full gradient-primary flex items-center justify-center shadow-glow">
+                  <Leaf className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="text-sm font-bold tracking-tight">PlantCare</span>
+                <span className="text-sm font-bold tracking-tight font-display">PlantCare</span>
               </div>
             )}
           </header>
