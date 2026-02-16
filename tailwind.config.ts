@@ -18,7 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["DM Sans", "system-ui", "-apple-system", "sans-serif"],
+        display: ["Playfair Display", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -76,6 +77,8 @@ export default {
         cream: "hsl(var(--cream))",
         sage: "hsl(var(--sage))",
         mint: "hsl(var(--mint))",
+        olive: "hsl(var(--olive))",
+        forest: "hsl(var(--forest))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -94,11 +97,11 @@ export default {
         "22": "5.5rem",
       },
       boxShadow: {
-        "soft": "0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 16px -4px rgba(0, 0, 0, 0.1)",
-        "medium": "0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 8px 24px -4px rgba(0, 0, 0, 0.12)",
-        "strong": "0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 16px 48px -8px rgba(0, 0, 0, 0.16)",
-        "glow": "0 0 0 1px rgba(16, 185, 129, 0.1), 0 4px 16px rgba(16, 185, 129, 0.15)",
-        "glow-lg": "0 0 0 1px rgba(16, 185, 129, 0.15), 0 8px 32px rgba(16, 185, 129, 0.2)",
+        "soft": "0 2px 10px -2px rgba(0, 0, 0, 0.06), 0 4px 20px -4px rgba(0, 0, 0, 0.08)",
+        "medium": "0 6px 20px -4px rgba(0, 0, 0, 0.1), 0 10px 30px -6px rgba(0, 0, 0, 0.12)",
+        "strong": "0 10px 30px -6px rgba(0, 0, 0, 0.14), 0 20px 50px -10px rgba(0, 0, 0, 0.18)",
+        "glow": "0 4px 16px rgba(50, 120, 60, 0.2)",
+        "glow-lg": "0 8px 32px rgba(50, 120, 60, 0.25)",
       },
       keyframes: {
         "accordion-down": {
@@ -162,8 +165,8 @@ export default {
           "50%": { opacity: "0.6" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(16, 185, 129, 0.4)" },
-          "50%": { boxShadow: "0 0 0 8px rgba(16, 185, 129, 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(50, 120, 60, 0.4)" },
+          "50%": { boxShadow: "0 0 0 8px rgba(50, 120, 60, 0)" },
         },
         "shimmer": {
           from: { backgroundPosition: "200% 0" },
