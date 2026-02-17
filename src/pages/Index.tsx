@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
+import heroBg from '@/assets/hero-botanical.png';
 import {
   Leaf, Search, Droplets, Sun, Sprout, ArrowRight, Truck, ShieldCheck,
   HeadphonesIcon, CreditCard, Star, Users, BarChart3, Play, Quote, Mail
@@ -55,11 +56,11 @@ export default function Index() {
         {/* Background plant image */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=1600&h=900&fit=crop"
+            src={heroBg}
             alt="Indoor plants background"
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--forest))]/90 via-[hsl(var(--forest))]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--forest))]/85 via-[hsl(var(--forest))]/65 to-transparent" />
         </div>
 
         <div className="container relative px-4 sm:px-6 py-20 md:py-28 lg:py-36">
