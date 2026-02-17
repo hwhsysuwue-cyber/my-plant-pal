@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { Leaf, ArrowRight } from 'lucide-react';
+import { Leaf, Search, ShoppingCart, ArrowRight } from 'lucide-react';
 
 export function Header() {
   const { user } = useAuth();
@@ -10,28 +10,35 @@ export function Header() {
 
   if (user) return null;
 
+  const navItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Plants', path: '/search' },
+    { label: 'Plant Care', path: '/search' },
+    { label: 'About', path: '/' },
+    { label: 'Contact', path: '/feedback' },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
-      <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="h-10 w-10 rounded-full gradient-primary flex items-center justify-center shadow-glow group-hover:shadow-glow-lg transition-shadow">
-            <Leaf className="h-5 w-5 text-primary-foreground" />
+    <header className="sticky top-0 z-50 w-full bg-background border-b border-border/40">
+      <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center">
+            <Leaf className="h-4.5 w-4.5 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold tracking-tight font-display">PlantCare</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1 text-sm">
-          {[
-            { label: 'Home', path: '/' },
-            { label: 'Plants', path: '/search' },
-          ].map((item) => (
+        {/* Center Nav */}
+        <nav className="hidden md:flex items-center gap-0.5 text-sm">
+          {navItems.map((item) => (
             <Link
-              key={item.path}
+              key={item.label}
               to={item.path}
-              className={`px-4 py-2 rounded-full transition-all duration-200 ${
-                location.pathname === item.path
-                  ? 'text-foreground font-semibold bg-accent'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${
+                location.pathname === item.path && item.label === 'Home'
+                  ? 'text-foreground font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {item.label}
@@ -39,13 +46,17 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="text-sm rounded-full" onClick={() => navigate('/auth')}>
-            Sign In
+        {/* Right Actions */}
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" className="rounded-full h-9 w-9" onClick={() => navigate('/search')}>
+            <Search className="h-4.5 w-4.5" />
           </Button>
-          <Button size="sm" className="text-sm rounded-full shadow-glow hover:shadow-glow-lg transition-all font-semibold" onClick={() => navigate('/auth?mode=signup')}>
+          <Button
+            size="sm"
+            className="rounded-full px-5 h-9 text-sm font-semibold hidden sm:flex"
+            onClick={() => navigate('/auth?mode=signup')}
+          >
             Get Started
-            <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
           </Button>
         </div>
       </div>
