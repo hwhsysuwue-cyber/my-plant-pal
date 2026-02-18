@@ -17,12 +17,12 @@ export function Header() {
   ];
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 w-full border-b border-white/10">
+    <header className="absolute top-0 left-0 right-0 z-50 w-full border-b border-border">
       <div className="container flex h-16 items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
           <Leaf className="h-5 w-5 text-primary" />
-          <span className="text-lg font-bold tracking-[0.15em] uppercase text-white font-display">PlantCare</span>
+          <span className="text-lg font-bold tracking-[0.15em] uppercase text-foreground font-display">PlantCare</span>
         </Link>
 
         {/* Center Nav */}
@@ -31,7 +31,7 @@ export function Header() {
             <Link
               key={item.label}
               to={item.path}
-              className="tracking-[0.2em] text-white/60 hover:text-white transition-colors duration-200 font-medium"
+              className="tracking-[0.2em] text-foreground/60 hover:text-foreground transition-colors duration-200 font-medium"
             >
               {item.label}
             </Link>
@@ -41,7 +41,7 @@ export function Header() {
         {/* Sign In */}
         <Button
           size="sm"
-          className="rounded-none px-7 h-9 text-xs font-bold tracking-[0.15em] uppercase bg-primary text-white hover:bg-primary/90 shadow-none border-0"
+          className="rounded-none px-7 h-9 text-xs font-bold tracking-[0.15em] uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-none border-0"
           onClick={() => navigate('/auth')}
         >
           SIGN IN
