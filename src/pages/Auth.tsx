@@ -135,8 +135,8 @@ export default function Auth() {
             Back to sign in
           </button>
 
-           <Card className="border rounded-lg overflow-hidden">
-             <div className="h-0.5 gradient-primary" />
+           <Card className="border border-border rounded-xl overflow-hidden shadow-2xl">
+             <div className="h-0.5 bg-primary" />
             
             <CardHeader className="text-center pt-8 pb-4">
               <div className="flex justify-center mb-5">
@@ -200,16 +200,16 @@ export default function Auth() {
           </Link>
         )}
 
-        <Card className="border rounded-lg overflow-hidden">
-          <div className="h-0.5 gradient-primary" />
+        <Card className="border border-border rounded-xl overflow-hidden shadow-2xl">
+          <div className="h-0.5 bg-primary" />
           
           <CardHeader className="text-center pt-8 pb-4">
             <div className="flex justify-center mb-5">
-              <div className="h-12 w-12 rounded-lg gradient-primary flex items-center justify-center">
+              <div className="h-12 w-12 rounded-xl bg-primary/15 border border-primary/20 flex items-center justify-center">
                 {mode === 'forgot' ? (
-                  <Mail className="h-7 w-7 text-white" />
+                  <Mail className="h-6 w-6 text-primary" />
                 ) : (
-                  <Leaf className="h-7 w-7 text-white" />
+                  <Leaf className="h-6 w-6 text-primary" />
                 )}
               </div>
             </div>
