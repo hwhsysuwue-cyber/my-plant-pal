@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Leaf } from 'lucide-react';
@@ -6,32 +6,31 @@ import { Leaf } from 'lucide-react';
 export function Header() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   if (user) return null;
 
   const navItems = [
-    { label: 'COLLECTION', path: '/search' },
-    { label: 'CARE GUIDES', path: '/search' },
-    { label: 'ABOUT', path: '/' },
+    { label: 'Collection', path: '/search' },
+    { label: 'Care Guides', path: '/search' },
+    { label: 'About', path: '/' },
   ];
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 w-full border-b border-border">
-      <div className="container flex h-16 items-center justify-between px-6 lg:px-8">
+    <header className="absolute top-0 left-0 right-0 z-50 w-full">
+      <div className="container flex h-[68px] items-center justify-between px-6 lg:px-8">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <Leaf className="h-5 w-5 text-primary" />
-          <span className="text-lg font-bold tracking-[0.15em] uppercase text-foreground font-display">PlantCare</span>
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <Leaf className="h-4.5 w-4.5 text-primary" style={{ width: '18px', height: '18px' }} />
+          <span className="text-[15px] font-bold tracking-[0.12em] uppercase text-foreground font-display">PlantCare</span>
         </Link>
 
         {/* Center Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-[11px]">
+        <nav className="hidden md:flex items-center gap-7">
           {navItems.map((item) => (
             <Link
               key={item.label}
               to={item.path}
-              className="tracking-[0.2em] text-foreground/60 hover:text-foreground transition-colors duration-200 font-medium"
+              className="text-[12px] tracking-[0.15em] text-foreground/55 hover:text-foreground transition-colors duration-200 font-medium uppercase"
             >
               {item.label}
             </Link>
@@ -41,10 +40,10 @@ export function Header() {
         {/* Sign In */}
         <Button
           size="sm"
-          className="rounded-none px-7 h-9 text-xs font-bold tracking-[0.15em] uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-none border-0"
+          className="rounded-none px-6 h-9 text-[11px] font-bold tracking-[0.18em] uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-none border-0"
           onClick={() => navigate('/auth')}
         >
-          SIGN IN
+          Sign In
         </Button>
       </div>
     </header>

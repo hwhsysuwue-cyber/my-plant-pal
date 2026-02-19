@@ -76,54 +76,54 @@ export default function Index() {
   return (
     <Layout>
       {/* ===== HERO ===== */}
-      <section className="relative min-h-screen flex flex-col bg-background">
+      <section className="relative min-h-[90vh] flex flex-col bg-background">
         <div className="absolute inset-0">
           <img
             src={heroBg}
             alt="Botanical plant background"
-            className="w-full h-full object-cover object-center opacity-35"
+            className="w-full h-full object-cover object-center opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background/80" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/90" />
         </div>
 
-        <div className="container relative px-6 lg:px-8 pt-36 pb-20 flex-1 flex flex-col justify-center max-w-[700px]">
-          <p className="text-foreground/40 text-[11px] tracking-[0.35em] uppercase font-medium mb-10">
-            PREMIUM PLANT CARE
+        <div className="container relative px-6 lg:px-8 pt-32 pb-24 flex-1 flex flex-col justify-center max-w-[680px]">
+          <p className="text-foreground/40 text-[10px] tracking-[0.4em] uppercase font-medium mb-8">
+            Premium Plant Care
           </p>
 
-          <h1 className="font-display font-bold leading-[0.9] tracking-tight mb-10">
-            <span className="block text-[clamp(80px,14vw,160px)] text-primary">PLANT</span>
-            <span className="block text-[clamp(80px,14vw,160px)] text-foreground">CARE</span>
+          <h1 className="font-display font-bold leading-[0.92] tracking-tight mb-8">
+            <span className="block text-[clamp(52px,9vw,96px)] text-primary">PLANT</span>
+            <span className="block text-[clamp(52px,9vw,96px)] text-foreground">CARE</span>
           </h1>
 
-          <p className="text-foreground/55 text-base leading-relaxed mb-12 max-w-[420px]">
+          <p className="text-foreground/55 text-[15px] leading-[1.7] mb-10 max-w-[420px]">
             Nurture your green companions with expert guidance. Discover the art of plant care that transforms any space into a living sanctuary.
           </p>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 flex-wrap">
             {user ? (
               isAdmin ? (
-                <Button asChild className="rounded-none h-12 px-10 text-xs font-bold tracking-[0.15em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
+                <Button asChild className="rounded-none h-11 px-9 text-[11px] font-bold tracking-[0.18em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
                   <Link to="/admin">DASHBOARD <ArrowRight className="ml-2 h-3.5 w-3.5" /></Link>
                 </Button>
               ) : (
                 <>
-                  <Button asChild className="rounded-none h-12 px-10 text-xs font-bold tracking-[0.15em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
+                  <Button asChild className="rounded-none h-11 px-9 text-[11px] font-bold tracking-[0.18em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
                     <Link to="/search">EXPLORE</Link>
                   </Button>
-                  <Button asChild variant="outline" className="rounded-none h-12 px-10 text-xs font-bold tracking-[0.15em] uppercase border-foreground/25 text-foreground hover:bg-foreground/5 bg-transparent shadow-none">
+                  <Button asChild variant="outline" className="rounded-none h-11 px-9 text-[11px] font-bold tracking-[0.18em] uppercase border-foreground/20 text-foreground hover:bg-foreground/5 bg-transparent shadow-none">
                     <Link to="/my-garden">MY GARDEN</Link>
                   </Button>
                 </>
               )
             ) : (
               <>
-                <Button asChild className="rounded-none h-12 px-10 text-xs font-bold tracking-[0.15em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
+                <Button asChild className="rounded-none h-11 px-9 text-[11px] font-bold tracking-[0.18em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
                   <Link to="/search">EXPLORE</Link>
                 </Button>
-                <Button asChild variant="outline" className="rounded-none h-12 px-10 text-xs font-bold tracking-[0.15em] uppercase border-foreground/25 text-foreground hover:bg-foreground/5 bg-transparent shadow-none">
-                  <Link to="/auth?mode=signup">LEARN MORE</Link>
+                <Button asChild variant="outline" className="rounded-none h-11 px-9 text-[11px] font-bold tracking-[0.18em] uppercase border-foreground/20 text-foreground hover:bg-foreground/5 bg-transparent shadow-none">
+                  <Link to="/auth?mode=signup">GET STARTED</Link>
                 </Button>
               </>
             )}
@@ -132,29 +132,29 @@ export default function Index() {
       </section>
 
       {/* ===== PHILOSOPHY ===== */}
-      <section className="bg-card py-28 md:py-36">
+      <section className="bg-card py-24 md:py-32">
         <div className="container px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 mb-20">
+          <div className="grid lg:grid-cols-2 gap-14 mb-18">
             <div>
-              <p className="text-primary text-[11px] tracking-[0.3em] uppercase font-medium mb-8">OUR PHILOSOPHY</p>
-              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.05]">
+              <p className="text-primary text-[10px] tracking-[0.35em] uppercase font-medium mb-7">Our Philosophy</p>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
                 The art of{' '}
                 <em className="not-italic text-[hsl(var(--gold))]">nurturing</em>
                 {' '}green life
               </h2>
             </div>
-            <div className="flex flex-col justify-center gap-5">
-              <p className="text-foreground/50 text-base leading-relaxed">
+            <div className="flex flex-col justify-center gap-4">
+              <p className="text-foreground/50 text-sm leading-[1.8]">
                 Every plant tells a story. We combine botanical science with intuitive care practices to help you build a deeper connection with your indoor garden.
               </p>
-              <p className="text-foreground/50 text-base leading-relaxed">
+              <p className="text-foreground/50 text-sm leading-[1.8]">
                 From tropical monstera to resilient succulents, our premium care guides ensure your plants don't just survive — they flourish.
               </p>
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] lg:aspect-auto lg:h-[420px]">
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            <div className="rounded-xl overflow-hidden aspect-[4/3] lg:aspect-auto lg:h-[400px]">
               <img
                 src="https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=800&h=600&fit=crop"
                 alt="Plant leaves close up"
@@ -162,15 +162,15 @@ export default function Index() {
               />
             </div>
 
-            <div className="flex flex-col justify-center gap-10">
+            <div className="flex flex-col justify-center gap-8">
               {features.map((f) => (
                 <div key={f.title} className="flex items-start gap-5">
-                  <div className="h-11 w-11 rounded-lg bg-foreground/5 border border-border flex items-center justify-center flex-shrink-0">
-                    <f.icon className="h-[18px] w-[18px] text-primary" />
+                  <div className="h-10 w-10 rounded-lg bg-foreground/5 border border-border flex items-center justify-center flex-shrink-0">
+                    <f.icon className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-foreground font-bold text-base mb-1.5">{f.title}</h3>
-                    <p className="text-foreground/40 text-sm leading-relaxed">{f.desc}</p>
+                    <h3 className="text-foreground font-semibold text-sm mb-1.5 tracking-wide">{f.title}</h3>
+                    <p className="text-foreground/40 text-sm leading-[1.7]">{f.desc}</p>
                   </div>
                 </div>
               ))}
@@ -180,45 +180,45 @@ export default function Index() {
       </section>
 
       {/* ===== FEATURED COLLECTION ===== */}
-      <section className="bg-background py-28 md:py-36">
+      <section className="bg-background py-24 md:py-32">
         <div className="container px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <p className="text-primary text-[11px] tracking-[0.3em] uppercase font-medium mb-6">FEATURED COLLECTION</p>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-5 leading-tight">
+          <div className="text-center mb-14">
+            <p className="text-primary text-[10px] tracking-[0.35em] uppercase font-medium mb-5">Featured Collection</p>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
               Become a{' '}
               <em className="not-italic text-[hsl(var(--gold))]">favorite</em>
               {' '}of your guests
             </h2>
-            <p className="text-foreground/40 text-base max-w-md mx-auto leading-relaxed">
+            <p className="text-foreground/40 text-sm max-w-sm mx-auto leading-[1.8]">
               Curated selection of indoor plants perfect for any living space, with complete care guidance.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-3 gap-4">
             {collection.map((plant) => (
               <Link
                 key={plant.name}
                 to="/search"
                 className="group block border border-border rounded-xl overflow-hidden hover:border-foreground/20 transition-colors duration-300 bg-card"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src={plant.img}
                     alt={plant.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-foreground font-bold text-lg mb-1">{plant.name}</h3>
-                  <p className="text-primary text-sm italic mb-2">{plant.latin}</p>
-                  <p className="text-foreground/35 text-sm">{plant.care}</p>
+                <div className="p-5">
+                  <h3 className="text-foreground font-bold text-base mb-1 font-display">{plant.name}</h3>
+                  <p className="text-primary text-xs italic mb-2">{plant.latin}</p>
+                  <p className="text-foreground/35 text-xs">{plant.care}</p>
                 </div>
               </Link>
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Button asChild variant="outline" className="rounded-none h-12 px-12 text-xs font-bold tracking-[0.15em] uppercase border-foreground/20 text-foreground hover:bg-foreground/5 bg-transparent">
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="rounded-none h-11 px-10 text-[11px] font-bold tracking-[0.18em] uppercase border-foreground/20 text-foreground hover:bg-foreground/5 bg-transparent">
               <Link to="/search">VIEW ALL PLANTS <ChevronRight className="ml-2 h-3.5 w-3.5" /></Link>
             </Button>
           </div>
@@ -226,24 +226,24 @@ export default function Index() {
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="bg-card py-28 md:py-36">
+      <section className="bg-card py-24 md:py-32">
         <div className="container px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <p className="text-primary text-[11px] tracking-[0.3em] uppercase font-medium mb-6">TESTIMONIALS</p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground">What our community says</h2>
+          <div className="text-center mb-14">
+            <p className="text-primary text-[10px] tracking-[0.35em] uppercase font-medium mb-5">Testimonials</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">What our community says</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-5">
             {testimonials.map((t, idx) => (
               <div
                 key={t.name}
-                className={`p-8 border border-border rounded-xl bg-background ${idx === 1 ? 'md:-translate-y-4' : ''}`}
+                className={`p-7 border border-border rounded-xl bg-background ${idx === 1 ? 'md:-translate-y-3' : ''}`}
               >
-                <Quote className="h-7 w-7 text-primary/30 mb-6" />
-                <p className="text-foreground/50 text-sm leading-relaxed mb-8">{t.text}</p>
-                <div className="flex items-center gap-1 mb-5">
+                <Quote className="h-6 w-6 text-primary/25 mb-5" />
+                <p className="text-foreground/50 text-sm leading-[1.8] mb-7">{t.text}</p>
+                <div className="flex items-center gap-1 mb-4">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 text-[hsl(var(--gold))] fill-[hsl(var(--gold))]" />
+                    <Star key={i} className="h-3 w-3 text-[hsl(var(--gold))] fill-[hsl(var(--gold))]" />
                   ))}
                 </div>
                 <div>
@@ -257,28 +257,28 @@ export default function Index() {
       </section>
 
       {/* ===== NEWSLETTER ===== */}
-      <section className="relative overflow-hidden bg-background py-28">
+      <section className="relative overflow-hidden bg-background py-24">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1470058869958-2a77e919a0d0?w=1400&h=500&fit=crop"
             alt="Plants"
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-15"
           />
-          <div className="absolute inset-0 bg-background/70" />
+          <div className="absolute inset-0 bg-background/75" />
         </div>
         <div className="container relative px-6 lg:px-8 text-center">
-          <p className="text-primary text-[11px] tracking-[0.3em] uppercase font-medium mb-6">STAY IN THE LOOP</p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">Get the green in your inbox</h2>
-          <p className="text-foreground/40 text-sm mb-10 max-w-sm mx-auto leading-relaxed">
+          <p className="text-primary text-[10px] tracking-[0.35em] uppercase font-medium mb-5">Stay in the Loop</p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">Get the green in your inbox</h2>
+          <p className="text-foreground/40 text-sm mb-9 max-w-xs mx-auto leading-[1.8]">
             Subscribe for exclusive plant care tips, new arrivals and fresh deals.
           </p>
           <div className="flex items-center gap-0 max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email..."
-              className="flex-1 h-12 px-6 text-sm bg-foreground/8 text-foreground placeholder:text-foreground/25 border border-foreground/15 border-r-0 focus:outline-none focus:border-primary/50 transition-colors"
+              className="flex-1 h-11 px-5 text-sm bg-foreground/8 text-foreground placeholder:text-foreground/25 border border-foreground/15 border-r-0 focus:outline-none focus:border-primary/50 transition-colors"
             />
-            <Button className="rounded-none h-12 px-8 text-xs font-bold tracking-[0.15em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
+            <Button className="rounded-none h-11 px-7 text-[11px] font-bold tracking-[0.18em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
               SUBSCRIBE
             </Button>
           </div>
@@ -287,14 +287,14 @@ export default function Index() {
 
       {/* ===== CTA ===== */}
       {!user && (
-        <section className="bg-card py-24 border-t border-border">
+        <section className="bg-card py-20 border-t border-border">
           <div className="container px-6 lg:px-8 text-center">
-            <Leaf className="h-10 w-10 text-primary mx-auto mb-6" />
-            <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-5">Start your plant journey today</h2>
-            <p className="text-foreground/35 text-base mb-10 max-w-md mx-auto leading-relaxed">
+            <Leaf className="h-8 w-8 text-primary mx-auto mb-5" />
+            <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-4">Start your plant journey today</h2>
+            <p className="text-foreground/35 text-sm mb-9 max-w-xs mx-auto leading-[1.8]">
               Join thousands of plant enthusiasts who trust PlantCare for healthier, happier plants.
             </p>
-            <Button asChild className="rounded-none h-12 px-14 text-xs font-bold tracking-[0.15em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
+            <Button asChild className="rounded-none h-11 px-12 text-[11px] font-bold tracking-[0.18em] uppercase bg-primary hover:bg-primary/90 text-primary-foreground shadow-none">
               <Link to="/auth?mode=signup">CREATE FREE ACCOUNT <ArrowRight className="ml-2 h-3.5 w-3.5" /></Link>
             </Button>
           </div>
