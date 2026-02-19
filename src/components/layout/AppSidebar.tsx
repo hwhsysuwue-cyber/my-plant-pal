@@ -41,35 +41,35 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
-      <SidebarHeader className="p-4">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar" style={{ '--sidebar-width': '220px' } as React.CSSProperties}>
+      <SidebarHeader className="p-4 pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="h-10 w-10 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow">
-            <Leaf className="h-5 w-5 text-primary-foreground" />
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+            <Leaf className="h-4 w-4 text-primary-foreground" />
           </div>
           {!collapsed && (
-            <span className="text-base font-bold text-sidebar-foreground tracking-tight font-display">PlantCare</span>
+            <span className="text-sm font-bold text-sidebar-foreground tracking-[0.08em] uppercase font-display">PlantCare</span>
           )}
         </div>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-[0.15em] text-sidebar-foreground/40 font-semibold px-3">
+          <SidebarGroupLabel className="text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/35 font-semibold px-3 mb-1">
             {isAdmin ? 'Admin' : 'Menu'}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-0.5">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink
                       to={item.url}
                       end={item.url === '/' || item.url === '/admin'}
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-200"
-                      activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-150"
+                      activeClassName="bg-sidebar-accent text-sidebar-foreground font-semibold"
                     >
-                      <item.icon className="h-4 w-4 flex-shrink-0" />
+                      <item.icon className="h-[15px] w-[15px] flex-shrink-0" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -80,23 +80,23 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-3">
+      <SidebarFooter className="p-3 pt-0">
         <Separator className="mb-3 bg-sidebar-border" />
         {user && (
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {!collapsed && (
-              <div className="px-3 py-2 rounded-xl bg-sidebar-accent/50">
-                <p className="text-xs font-semibold truncate text-sidebar-foreground">{user.email}</p>
-                <p className="text-[10px] text-sidebar-foreground/50 capitalize font-medium">{isAdmin ? 'Admin' : 'Member'}</p>
+              <div className="px-3 py-2 rounded-lg bg-sidebar-accent/40">
+                <p className="text-[11px] font-medium truncate text-sidebar-foreground/80">{user.email}</p>
+                <p className="text-[10px] text-sidebar-foreground/40 capitalize mt-0.5">{isAdmin ? 'Admin' : 'Member'}</p>
               </div>
             )}
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start gap-2.5 text-sidebar-foreground/50 hover:text-destructive hover:bg-sidebar-accent rounded-xl"
+              className="w-full justify-start gap-2 text-[12px] text-sidebar-foreground/40 hover:text-destructive hover:bg-sidebar-accent rounded-lg h-8"
               onClick={handleSignOut}
             >
-              <LogOut className="h-4 w-4 flex-shrink-0" />
+              <LogOut className="h-[14px] w-[14px] flex-shrink-0" />
               {!collapsed && <span>Sign Out</span>}
             </Button>
           </div>

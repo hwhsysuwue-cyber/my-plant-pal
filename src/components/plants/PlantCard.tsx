@@ -71,16 +71,16 @@ export function PlantCard({
           ))}
         </div>
 
-        {description && <p className="mt-3 text-xs text-muted-foreground line-clamp-2 leading-relaxed">{description}</p>}
+        {description && <p className="mt-3 text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">{description}</p>}
       </CardContent>
 
       <CardFooter className="px-4 pb-4 pt-0 flex gap-2">
         {isAdmin ? (
           <>
-            <Button variant="outline" size="sm" className="flex-1 h-9 text-xs rounded-full" onClick={onEdit}>
+            <Button variant="outline" size="sm" className="flex-1 h-8 text-xs rounded-lg" onClick={onEdit}>
               <Pencil className="mr-1.5 h-3 w-3" /> Edit
             </Button>
-            <Button variant="outline" size="icon" className="h-9 w-9 rounded-full text-destructive hover:bg-destructive/10" onClick={onDelete}>
+            <Button variant="outline" size="icon" className="h-8 w-8 rounded-lg text-destructive hover:bg-destructive/10" onClick={onDelete}>
               <Trash2 className="h-3 w-3" />
             </Button>
           </>
