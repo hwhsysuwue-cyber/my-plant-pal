@@ -76,28 +76,28 @@ export default function Index() {
   return (
     <Layout>
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[90vh] flex flex-col bg-background">
+      <section className="relative min-h-screen flex flex-col bg-background">
         <div className="absolute inset-0">
           <img
             src={heroBg}
             alt="Botanical plant background"
-            className="w-full h-full object-cover object-center opacity-30"
+            className="w-full h-full object-cover object-center opacity-25"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/50" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/90" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background/95" />
         </div>
 
-        <div className="container relative px-6 lg:px-8 pt-32 pb-24 flex-1 flex flex-col justify-center max-w-[680px]">
-          <p className="text-foreground/40 text-[10px] tracking-[0.4em] uppercase font-medium mb-8">
+        <div className="container relative px-6 lg:px-8 pt-36 pb-28 flex-1 flex flex-col justify-center max-w-[680px]">
+          <p className="text-foreground/35 text-[10px] tracking-[0.45em] uppercase font-medium mb-6">
             Premium Plant Care
           </p>
 
-          <h1 className="font-display font-bold leading-[0.92] tracking-tight mb-8">
-            <span className="block text-[clamp(52px,9vw,96px)] text-primary">PLANT</span>
-            <span className="block text-[clamp(52px,9vw,96px)] text-foreground">CARE</span>
+          <h1 className="font-display font-bold leading-[1] tracking-tight mb-6">
+            <span className="block text-[clamp(38px,6vw,68px)] text-primary">PLANT</span>
+            <span className="block text-[clamp(38px,6vw,68px)] text-foreground">CARE</span>
           </h1>
 
-          <p className="text-foreground/55 text-[15px] leading-[1.7] mb-10 max-w-[420px]">
+          <p className="text-foreground/50 text-[15px] leading-[1.75] mb-9 max-w-[400px]">
             Nurture your green companions with expert guidance. Discover the art of plant care that transforms any space into a living sanctuary.
           </p>
 

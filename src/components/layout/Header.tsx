@@ -16,8 +16,8 @@ export function Header() {
   ];
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 w-full">
-      <div className="container flex h-[68px] items-center justify-between px-6 lg:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/30">
+      <div className="container flex h-16 items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <Leaf className="h-4.5 w-4.5 text-primary" style={{ width: '18px', height: '18px' }} />
